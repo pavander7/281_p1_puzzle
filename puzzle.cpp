@@ -3,6 +3,7 @@
 #include <getopt.h>
 #include <iostream>
 #include <string>
+#include <map.h>
 
 using namespace std;
 
