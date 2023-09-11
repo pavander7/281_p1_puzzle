@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
     
-    cout << "flag 1" << endl;
+    //cout << "flag 1" << endl;
     
     static struct option long_options[] = {
     {"help",    no_argument,        NULL,  'h'},
