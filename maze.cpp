@@ -9,18 +9,52 @@ class Maze {
 public:
     Maze() {
         cin >> num_colors >> height >> width;
+        start_r = start_c = target_r = target_c = -1;
+        if (num_colors < 0 || num_colors > 26) {
+            cerr << "Error: Invalid numColor";
+            assert(false);
+        } if (width <= 1) {
+            cerr << "Error: Invalid width";
+        } if (height <= 1) {
+            cerr << "Error: Invalid height";
+        }
         openDoor = 0;
         for (int r = 0; r < height; r++) {
             for (int c = 0; r < width; c++) {
                 cin >> mazeMap[r][c];
                 if (mazeMap[r][c] == '@') {
+                    if (start_r != -1 || start_c != -1) {
+                        cerr << "Error: Puzzle must have only one start and one target";
+                        assert(false);
+                    }
                     start_r = r;
                     start_c = c;
                 } else if (mazeMap[r][c] == '?') {
+                    if (target_r != -1 || target_c != -1) {
+                        cerr << "Error: Puzzle must have only one start and one target";
+                        assert(false);
+                    }
                     target_r = r;
                     target_c = c;
+                } else if (mazeMap[r][c] <= 'a' && mazeMap [r][c] >= 'z') {
+                    if (mazeMap[r][c] > (96 + num_colors)) {
+                        cerr << "Error: Invalid button in map";
+                        assert(false);
+                    }
+                } else if (mazeMap[r][c] <= 'A' && mazeMap [r][c] >= 'A') {
+                    if (mazeMap[r][c] > (96 + num_colors)) {
+                        cerr << "Error: Invalid door in map";
+                        assert(false);
+                    }
+                } else if (mazeMap[r][c] == '.' || mazeMap [r][c] >= '#' || mazeMap[r][c] == '^');
+                else {
+                    cerr << "Error: Invalid character in map";
+                    assert(false);
                 }
             }
+        } if (start_r == -1 || start_c == -1 || target_r == -1 || target_c == -1) {
+            cerr << "Error: Puzzle must have exactly one start and one target";
+            assert(false);
         }
     }
 
