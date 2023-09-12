@@ -22,8 +22,8 @@ int main(int argc, char* argv[]) {
     
 
     int option_index = 0;
-    int dataType = 0;
-    int outputType = 0;
+    int dataType = 2;
+    int outputType = 2;
     //cout << "flag 1" << endl;
     int c = getopt_long(argc, argv, "hqso:", long_options, &option_index);
     while (c != -1) {
@@ -31,9 +31,17 @@ int main(int argc, char* argv[]) {
         if (c == 'h') {
             //cout << "help menu" << endl; //UPDATE
         } else if (c == 'q') {
-            dataType = 0;
+            if (dataType == 2) dataType = 0;
+            else {
+                cerr << "Error: Can not have both stack and queue";
+                return 1;
+            }
         } else if (c == 's') {
-            dataType = 1;
+            if (dataType == 2) dataType = 1;
+            else {
+                cerr << "Error: Can not have both stack and queue";
+                return 1;
+            }
         } else if (c == 'o') {
             string temp = optarg;
             //cout << "slay 1" << endl;
@@ -43,8 +51,14 @@ int main(int argc, char* argv[]) {
             } else if (temp == "list") {
                 outputType = 1;
                 //cout << "slay 2.2: " << optind << endl;
-            } else return 1;
-        } else return 1;
+            } else {
+                cerr << "Error: Invalid output mode";
+                return 1;
+            }
+        } else {
+            cerr << "Error: Unknown option";
+            return 1;
+        }
         c = getopt_long(argc, argv, "hqso:", long_options, &option_index);
     }
     
