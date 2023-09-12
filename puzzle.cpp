@@ -8,9 +8,7 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    
-    //cout << "flag 1" << endl;
-    
+
     static struct option long_options[] = {
     {"help",    no_argument,        NULL,  'h'},
     {"queue",   no_argument,        NULL,  'q'},
@@ -19,17 +17,14 @@ int main(int argc, char* argv[]) {
     {0,         0,                  NULL,  0, }
     };
 
-    
-
     int option_index = 0;
     int dataType = 2;
     int outputType = 2;
-    //cout << "flag 1" << endl;
+
     int c = getopt_long(argc, argv, "hqso:", long_options, &option_index);
     while (c != -1) {
-        //cout << "flag 2 " << c << endl;
         if (c == 'h') {
-            //cout << "help menu" << endl; //UPDATE
+            cout << "help menu" << endl; //UPDATE
         } else if (c == 'q') {
             if (dataType == 2) dataType = 0;
             else {
@@ -61,5 +56,7 @@ int main(int argc, char* argv[]) {
         }
         c = getopt_long(argc, argv, "hqso:", long_options, &option_index);
     }
+
+
     
 }
