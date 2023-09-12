@@ -22,7 +22,7 @@ public:
 private:
     state current_state;
     deque<state> search_container;
-    bool discoverMap[1200][1220][26];
+    bool discoverMap[20000][20000][26];
     int width, height, num_colors;
     bool style;
 };
