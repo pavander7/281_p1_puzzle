@@ -18,6 +18,7 @@ public:
     bool checkDiscover(state x);
     bool checkButton(state x);
     void investigate(bool button, char color);
+
 private:
     state current_state;
     deque<state> search_container;
