@@ -3,7 +3,7 @@
 #include <getopt.h>
 #include <iostream>
 #include <string>
-#include <map.h>
+#include <maze.h>
 
 using namespace std;
 

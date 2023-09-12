@@ -9,6 +9,7 @@ class Maze {
 public:
     Maze() {
         cin >> num_colors >> height >> width;
+        openDoor = 0;
         for (int r = 0; r < height; r++) {
             for (int c = 0; r < width; c++) {
                 cin >> mazeMap[r][c];
@@ -36,10 +37,32 @@ public:
         return target_c;
     }
 
+    bool wall(int r, int c) {
+        return (mazeMap[r][c] == '#' || !door(r,c));
+    }
+    bool button(int r, int c) {
+        return ((mazeMap[r][c] >= 97 && mazeMap[r][c] <= 122) || mazeMap[r][c] == '^');
+    }
+    bool target(int r, int c) {
+        return (r == target_r && c == target_c);
+    }
+    bool door(int r, int c) {
+        if (mazeMap[r][c] >= 65 && mazeMap[r][c] <= 90) {
+            return (mazeMap[r][c] == openDoor);
+        } else return false;
+    }
+
+    void press(int r, int c) {
+        if (mazeMap[r][c] == '^') {
+            openDoor = 0;
+        } else openDoor = mazeMap[r][c] - 32;
+    }
+
 private:
     int num_colors;
     int height, width;
     int start_r, start_c;
     int target_r, target_c;
+    char openDoor;
     char mazeMap[1200][1200];
 };
