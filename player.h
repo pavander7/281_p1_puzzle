@@ -5,9 +5,9 @@
 using namespace std;
 
 struct state {
+    char color;
     int row;
     int col;
-    char color;
 };
 
 class player
@@ -17,12 +17,11 @@ public:
     void discover(state x);
     bool checkDiscover(state x);
     bool checkButton(state x);
-    void investigate(state x);
+    void investigate(bool button, char color);
 private:
     state current_state;
-    deque search_container;
+    deque<state> search_container;
     bool discoverMap[1200][1220][26];
     int width, height, num_colors;
     bool style;
 };
-
