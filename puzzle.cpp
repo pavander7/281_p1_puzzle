@@ -4,11 +4,12 @@
 #include <iostream>
 #include <string>
 #include <maze.h>
+#include <player.h>
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-
+    //used for getOptLong()
     static struct option long_options[] = {
     {"help",    no_argument,        NULL,  'h'},
     {"queue",   no_argument,        NULL,  'q'},
@@ -16,11 +17,13 @@ int main(int argc, char* argv[]) {
     {"output",  required_argument,  0,  'o'},
     {0,         0,                  NULL,  0, }
     };
-
     int option_index = 0;
-    int dataType = 2;
-    int outputType = 2;
 
+    //used to track data type, 2 signifies unknown
+    size_t dataType = 2;
+    size_t outputType = 2;
+
+    //input parsing
     int c = getopt_long(argc, argv, "hqso:", long_options, &option_index);
     while (c != -1) {
         if (c == 'h') {
@@ -57,6 +60,12 @@ int main(int argc, char* argv[]) {
         c = getopt_long(argc, argv, "hqso:", long_options, &option_index);
     }
 
+    //create map and player
+    Maze map = Maze();
+    player explorer = player(map.startRow(), map.startCol(), map.Width(), map.Height(), map.numColors(), (dataType == 1));
+
+
+    //search alg
 
     
 }
