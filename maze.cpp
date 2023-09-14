@@ -98,7 +98,7 @@ bool Maze::solve(state start) {
         if (observer.current_state.row == target_r && observer.current_state.col) {
             return true;
         } 
-        observer.investigate(button(observer.current_state.row, observer.current_state.col));
+        observer.investigate(button((observer.current_state.row), observer.current_state.col));
         if (solve(observer.current_state)) {
             path.push_front(observer.current_state);
         }
