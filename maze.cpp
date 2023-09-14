@@ -8,9 +8,14 @@ using namespace std;
 Maze::Maze(){
     cin >> num_colors >> height >> width;
     start_r = start_c = target_r = target_c = -1;
-    mazeMap.reserve(height);
+    mazeMap.resize(height);
+    discoverMap.resize(height);
     for (int q = 0; q < height; q++) {
-        mazeMap[q].reserve(width);
+        mazeMap[q].resize(width);
+        discoverMap[q].resize(width);
+        for (int w = 0; w < width; w++) {
+            discoverMap[q][w].resize(num_colors);
+        }
     }
     if (num_colors < 0 || num_colors > 26) {
         cerr << "Error: Invalid numColor";
@@ -80,12 +85,6 @@ void Maze::press(int r, int c) {
         } else openDoor = mazeMap[r][c] - 32;
 }
 
-struct Maze::state {
-    char color;
-    int row;
-    int col;
-};
-
 Maze::player::player(int r, int c) {
     current_state.row = r;
     current_state.col = c;
@@ -93,10 +92,38 @@ Maze::player::player(int r, int c) {
     discover(current_state);
 }
 
-void Maze::solve() {
+bool Maze::solve(state start) {
     player observer = player(start_r, start_c);
-    while(!checkDiscover({observer.current_state.color, target_r, target_c})) {
-        investigate(button(observer.current_state.))
+    while(!observer.empty()) {
+        if (observer.current_state.row == target_r && observer.current_state.col) {
+            return true;
+        } 
+        observer.investigate(button(observer.current_state.row, observer.current_state.col));
+        if (solve(observer.current_state)) {
+            path.push_front(observer.current_state);
+        }
+    } return false;
+}
+
+void Maze::listOut() {
+    cout << "(" << path.front().color << ", (" << 
+            path.front().row << ", " << path.front().col << "))";
+    path.pop_front();
+    while(!path.empty()) {
+        cout << endl << "(" << path.front().color << ", (" << 
+            path.front().row << ", " << path.front().col << "))";
+        path.pop_front();
+    }
+}
+
+void Maze::mapOut() {
+    cout << "(" << path.front().color << ", (" << 
+            path.front().row << ", " << path.front().col << "))";
+    path.pop_front();
+    while(!path.empty()) {
+        cout << endl << "(" << path.front().color << ", (" << 
+            path.front().row << ", " << path.front().col << "))";
+        path.pop_front();
     }
 }
 
@@ -122,9 +149,9 @@ bool Maze::player::checkButton(state x){
     } else return false;
 }
 
-void Maze::player::investigate(bool button, char color) {
+void Maze::player::investigate(bool button) {
     if (button && checkButton(current_state)) {
-        discover({color, current_state.row, current_state.col});
+        discover({current_state.color, current_state.row, current_state.col});
     } else {
         discover({current_state.color, current_state.row - 1, current_state.col}); //north
         discover({current_state.color, current_state.row, current_state.col + 1}); //east
@@ -133,4 +160,8 @@ void Maze::player::investigate(bool button, char color) {
     }
     search_container.pop_front();
     current_state = search_container.front();
+}
+
+bool Maze::player::empty() {
+    return search_container.empty();
 }

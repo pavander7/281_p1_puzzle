@@ -24,7 +24,9 @@ public:
     bool door(int r, int c) const;
 
     void press(int r, int c); //press the button (assumes cell is a button)
-    void solve();
+    bool solve(state start);
+    void listOut();
+    void mapOut();
 
 private:
     int num_colors;
@@ -33,19 +35,26 @@ private:
     int target_r, target_c;
     char openDoor;
     vector<vector<char> > mazeMap;
-    struct state;
+    vector<vector<vector<bool> > > discoverMap;
+    deque<state> path;
+    struct state {
+        char color;
+        int row;
+        int col;
+    };
+
     class player {
         public:
-            player();
+            player(int r, int c);
             void discover(state x);
             bool checkDiscover(state x);
             bool checkButton(state x);
             void investigate(bool button);
-
-        private:
+            bool empty();
             state current_state;
+            friend class map;
+        private:
             deque<state> search_container;
-            bool discoverMap[20000][20000][26];
             int width, height, num_colors;
             bool style;
             struct state;
