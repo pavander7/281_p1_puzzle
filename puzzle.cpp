@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <maze.h>
-#include <player.h>
 
 using namespace std;
 

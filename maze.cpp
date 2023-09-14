@@ -91,7 +91,7 @@ void Maze::press(int r, int c) {
         } else openDoor = mazeMap[r][c] - 32;
 }
 
-Maze::player::player(int r, int c, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
+player::player(int r, int c, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
     current_state.row = r;
     current_state.col = c;
     current_state.color = '^';

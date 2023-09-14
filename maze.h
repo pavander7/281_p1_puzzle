@@ -46,7 +46,9 @@ private:
     vector<vector<vector<bool> > > discoverMap;
     deque<state> path;
 
-    class player {
+};
+
+class player {
         public:
             player(int r, int c, vector<vector<vector<bool> > > &discoverMap, Maze &y);
             void discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze &y);
@@ -61,4 +63,3 @@ private:
             int width, height, num_colors;
             bool style;
     };
-};
