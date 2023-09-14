@@ -64,9 +64,6 @@ int Maze::startRow() const {return start_r;};
 int Maze::startCol() const {return start_c;};
 int Maze::targetRow() const {return target_r;};
 int Maze::targetCol() const {return target_c;};
-int Maze::Width() const {return width;};
-int Maze::Height() const {return height;};
-int Maze::numColors() const {return num_colors;};
 
 bool Maze::wall(int r, int c) const {return (mazeMap[r][c] == '#' || !door(r,c));};
 bool Maze::button(int r, int c) const {return ((mazeMap[r][c] >= 97 && mazeMap[r][c] <= 122) || mazeMap[r][c] == '^');};
@@ -81,4 +78,59 @@ void Maze::press(int r, int c) {
     if (mazeMap[r][c] == '^') {
             openDoor = 0;
         } else openDoor = mazeMap[r][c] - 32;
+}
+
+struct Maze::state {
+    char color;
+    int row;
+    int col;
+};
+
+Maze::player::player(int r, int c) {
+    current_state.row = r;
+    current_state.col = c;
+    current_state.color = '^';
+    discover(current_state);
+}
+
+void Maze::solve() {
+    player observer = player(start_r, start_c);
+    while(!checkDiscover({observer.current_state.color, target_r, target_c})) {
+        investigate(button(observer.current_state.))
+    }
+}
+
+void Maze::player::discover(state x) {
+    if (x.row >= width || x.col >= height || x.color >= (num_colors + 97)) {
+        return;
+    } else if (!checkDiscover(x) && !wall(x.row, x.col)) {
+        if(!style) {
+            search_container.push_back(x);
+        } else if (style) {
+            search_container.push_front(x);
+        } discoverMap[x.row][x.col][x.color - 97] = true;
+    } 
+}
+
+bool Maze::player::checkDiscover(state x){
+    return discoverMap[x.row][x.col][x.color - 97];
+}
+
+bool Maze::player::checkButton(state x){
+    if (!checkDiscover(x)) {
+        return true;
+    } else return false;
+}
+
+void Maze::player::investigate(bool button, char color) {
+    if (button && checkButton(current_state)) {
+        discover({color, current_state.row, current_state.col});
+    } else {
+        discover({current_state.color, current_state.row - 1, current_state.col}); //north
+        discover({current_state.color, current_state.row, current_state.col + 1}); //east
+        discover({current_state.color, current_state.row + 1, current_state.col}); //south
+        discover({current_state.color, current_state.row, current_state.col - 1}); //west
+    }
+    search_container.pop_front();
+    current_state = search_container.front();
 }

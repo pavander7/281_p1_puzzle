@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <deque>
 
 using namespace std;
 
@@ -23,6 +24,7 @@ public:
     bool door(int r, int c) const;
 
     void press(int r, int c); //press the button (assumes cell is a button)
+    void solve();
 
 private:
     int num_colors;
@@ -31,4 +33,21 @@ private:
     int target_r, target_c;
     char openDoor;
     vector<vector<char> > mazeMap;
+    struct state;
+    class player {
+        public:
+            player();
+            void discover(state x);
+            bool checkDiscover(state x);
+            bool checkButton(state x);
+            void investigate(bool button);
+
+        private:
+            state current_state;
+            deque<state> search_container;
+            bool discoverMap[20000][20000][26];
+            int width, height, num_colors;
+            bool style;
+            struct state;
+    };
 };
