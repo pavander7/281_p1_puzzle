@@ -6,6 +6,12 @@
 
 using namespace std;
 
+struct state {
+        char color;
+        int row;
+        int col;
+};
+
 class Maze {
 public:
     Maze(); //default constructor
@@ -28,6 +34,8 @@ public:
     void listOut();
     void mapOut();
 
+    bool checkDiscover(state x);
+
 private:
     int num_colors;
     int height, width;
@@ -37,19 +45,14 @@ private:
     vector<vector<char> > mazeMap;
     vector<vector<vector<bool> > > discoverMap;
     deque<state> path;
-    struct state {
-        char color;
-        int row;
-        int col;
-    };
 
     class player {
         public:
-            player(int r, int c);
-            void discover(state x);
-            bool checkDiscover(state x);
-            bool checkButton(state x);
-            void investigate(bool button);
+            player(int r, int c, vector<vector<vector<bool> > > &discoverMap, Maze &y);
+            void discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze &y);
+            
+            bool checkButton(state x, Maze &y);
+            void investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y);
             bool empty();
             state current_state;
             friend class map;
@@ -57,6 +60,5 @@ private:
             deque<state> search_container;
             int width, height, num_colors;
             bool style;
-            struct state;
     };
 };

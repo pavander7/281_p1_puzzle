@@ -5,6 +5,12 @@
 
 using namespace std;
 
+struct state {
+        char color;
+        int row;
+        int col;
+};
+
 Maze::Maze(){
     cin >> num_colors >> height >> width;
     start_r = start_c = target_r = target_c = -1;
@@ -85,20 +91,20 @@ void Maze::press(int r, int c) {
         } else openDoor = mazeMap[r][c] - 32;
 }
 
-Maze::player::player(int r, int c) {
+Maze::player::player(int r, int c, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
     current_state.row = r;
     current_state.col = c;
     current_state.color = '^';
-    discover(current_state);
+    discover(current_state, discoverMap, y);
 }
 
 bool Maze::solve(state start) {
-    player observer = player(start_r, start_c);
+    player observer = player(start_r, start_c, discoverMap, *this);
     while(!observer.empty()) {
         if (observer.current_state.row == target_r && observer.current_state.col) {
             return true;
         } 
-        observer.investigate(button((observer.current_state.row), observer.current_state.col));
+        observer.investigate(button(observer.current_state.row, observer.current_state.col), discoverMap, *this);
         if (solve(observer.current_state)) {
             path.push_front(observer.current_state);
         }
@@ -127,10 +133,10 @@ void Maze::mapOut() {
     }
 }
 
-void Maze::player::discover(state x) {
+void Maze::player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
     if (x.row >= width || x.col >= height || x.color >= (num_colors + 97)) {
         return;
-    } else if (!checkDiscover(x) && !wall(x.row, x.col)) {
+    } else if (!y.checkDiscover(x) && !y.wall(x.row, x.col)) {
         if(!style) {
             search_container.push_back(x);
         } else if (style) {
@@ -139,24 +145,24 @@ void Maze::player::discover(state x) {
     } 
 }
 
-bool Maze::player::checkDiscover(state x){
+bool Maze::checkDiscover(state x){
     return discoverMap[x.row][x.col][x.color - 97];
 }
 
-bool Maze::player::checkButton(state x){
-    if (!checkDiscover(x)) {
+bool Maze::player::checkButton(state x, Maze &y){
+    if (!y.checkDiscover(x)) {
         return true;
     } else return false;
 }
 
-void Maze::player::investigate(bool button) {
-    if (button && checkButton(current_state)) {
-        discover({current_state.color, current_state.row, current_state.col});
+void Maze::player::investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
+    if (button && checkButton(current_state, y)) {
+        discover({current_state.color, current_state.row, current_state.col}, discoverMap, y);
     } else {
-        discover({current_state.color, current_state.row - 1, current_state.col}); //north
-        discover({current_state.color, current_state.row, current_state.col + 1}); //east
-        discover({current_state.color, current_state.row + 1, current_state.col}); //south
-        discover({current_state.color, current_state.row, current_state.col - 1}); //west
+        discover({current_state.color, current_state.row - 1, current_state.col}, discoverMap, y); //north
+        discover({current_state.color, current_state.row, current_state.col + 1}, discoverMap, y); //east
+        discover({current_state.color, current_state.row + 1, current_state.col}, discoverMap, y); //south
+        discover({current_state.color, current_state.row, current_state.col - 1}, discoverMap, y); //west
     }
     search_container.pop_front();
     current_state = search_container.front();
