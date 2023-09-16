@@ -3,7 +3,7 @@
 #include <getopt.h>
 #include <iostream>
 #include <string>
-#include <maze.h>
+#include "maze.h"
 
 using namespace std;
 
@@ -41,13 +41,10 @@ int main(int argc, char* argv[]) {
             }
         } else if (c == 'o') {
             string temp = optarg;
-            //cout << "slay 1" << endl;
             if (temp == "map") {
                 outputType = 0;
-                //cout << "slay 2.1: " << optind << endl;
             } else if (temp == "list") {
                 outputType = 1;
-                //cout << "slay 2.2: " << optind << endl;
             } else {
                 cerr << "Error: Invalid output mode";
                 return 1;
@@ -62,9 +59,12 @@ int main(int argc, char* argv[]) {
     //create map and player
     Maze map = Maze();
     player explorer = player(map.startRow(), map.startCol(), map.discoverMap, map);
-
-
-    //search alg
-
+    cout << "hello";
+    map.solve(explorer.current_state);
+    cout << "hello";
+    map.listOut();
+    cout << "hello";
+    //if (outputType) map.mapOut();
+    //else map.listOut();
     
 }

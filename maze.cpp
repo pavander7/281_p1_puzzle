@@ -1,28 +1,14 @@
 //IDENTIFIER  = A8A3A33EF075ACEF9B08F5B9845569ECCB423725
 
-#include <maze.h>
+#include "maze.h"
 #include <iostream>
 
 using namespace std;
 
-struct state {
-        char color;
-        int row;
-        int col;
-};
-
 Maze::Maze(){
     cin >> num_colors >> height >> width;
-    start_r = start_c = target_r = target_c = -1;
-    mazeMap.resize(height);
-    discoverMap.resize(height);
-    for (int q = 0; q < height; q++) {
-        mazeMap[q].resize(width);
-        discoverMap[q].resize(width);
-        for (int w = 0; w < width; w++) {
-            discoverMap[q][w].resize(num_colors);
-        }
-    }
+    mazeMap = vector<vector<char> >(height, vector<char>(width, '.'));
+    discoverMap = vector<vector<vector<bool> > >(height, vector<vector<bool>>(num_colors, vector<bool>(width, false)));
     if (num_colors < 0 || num_colors > 26) {
         cerr << "Error: Invalid numColor";
         assert(false);
@@ -32,66 +18,108 @@ Maze::Maze(){
         cerr << "Error: Invalid height";
     }
     openDoor = 0;
-    for (int r = 0; r < height; r++) {
-        for (int c = 0; r < width; c++) {
+    bool startInit, targetInit = false;
+    int maxDoor = 64 + int(num_colors);
+    int maxButton = 96 + int(num_colors);
+    string junk;
+    getline(cin,junk);
+    cout << "discarded: " << junk << endl;
+    while (junk[0] == '/') {
+        getline(cin,junk);
+        cout << "discarded: " << junk << endl;
+    } for (size_t c = 0; c < width; c++) {
+        cout << "moving on" << endl;
+        mazeMap[0][c] = junk[c];
+        cout << mazeMap[0][c];
+        if (mazeMap[0][c] == '@') {
+            if (startInit) {
+                cerr << "Error: Puzzle must have only one start and one target";
+                assert(false);
+            }
+            start_r = 0;
+            start_c = c;
+            startInit = true;
+        } else if (mazeMap[0][c] == '?') {
+            if (targetInit) {
+                cerr << "Error: Puzzle must have only one start and one target";
+                assert(false);
+            }
+            target_r = 0;
+            target_c = c;
+            targetInit = true;
+        } else if (mazeMap[0][c] <= 'a' && mazeMap [0][c] >= 'z') {
+            if ((mazeMap[0][c] - 0) > (maxButton)) {
+                cerr << "Error: Invalid button in map";
+                assert(false);
+            }
+        } else if (mazeMap[0][c] <= 'A' && mazeMap [0][c] >= 'A') {
+            if ((mazeMap[0][c] - 0) > (maxDoor)) {
+                cerr << "Error: Invalid door in map";
+                assert(false);
+            }
+        } else if (mazeMap[0][c] == '.' || mazeMap [0][c] >= '#' || mazeMap[0][c] == '^');
+        else {
+            cerr << "Error: Invalid character in map";
+            cout << "broken: " << mazeMap[0][c] << endl;
+            assert(false);
+        }
+    }
+    for (size_t r = 0; r < height; r++) {
+        for (size_t c = 0; r < width; c++) {
             cin >> mazeMap[r][c];
+            cout << mazeMap[r][c];
             if (mazeMap[r][c] == '@') {
-                if (start_r != -1 || start_c != -1) {
+                if (startInit) {
                     cerr << "Error: Puzzle must have only one start and one target";
                     assert(false);
                 }
                 start_r = r;
                 start_c = c;
+                startInit = true;
             } else if (mazeMap[r][c] == '?') {
-                if (target_r != -1 || target_c != -1) {
+                if (targetInit) {
                     cerr << "Error: Puzzle must have only one start and one target";
                     assert(false);
                 }
                 target_r = r;
                 target_c = c;
+                targetInit = true;
             } else if (mazeMap[r][c] <= 'a' && mazeMap [r][c] >= 'z') {
-                if (mazeMap[r][c] > (96 + num_colors)) {
+                if ((mazeMap[r][c] - 0) > (maxButton)) {
                     cerr << "Error: Invalid button in map";
                     assert(false);
                 }
             } else if (mazeMap[r][c] <= 'A' && mazeMap [r][c] >= 'A') {
-                if (mazeMap[r][c] > (96 + num_colors)) {
+                if ((mazeMap[r][c] - 0) > (maxDoor)) {
                     cerr << "Error: Invalid door in map";
                     assert(false);
                 }
             } else if (mazeMap[r][c] == '.' || mazeMap [r][c] >= '#' || mazeMap[r][c] == '^');
             else {
                 cerr << "Error: Invalid character in map";
+                cout << "broken: " << mazeMap[r][c] << endl;
                 assert(false);
             }
         }
-    } if (start_r == -1 || start_c == -1 || target_r == -1 || target_c == -1) {
+    } if (!startInit || !targetInit) {
         cerr << "Error: Puzzle must have exactly one start and one target";
         assert(false);
     }
 }
 
-int Maze::startRow() const {return start_r;};
-int Maze::startCol() const {return start_c;};
-int Maze::targetRow() const {return target_r;};
-int Maze::targetCol() const {return target_c;};
-
-bool Maze::wall(int r, int c) const {return (mazeMap[r][c] == '#' || !door(r,c));};
-bool Maze::button(int r, int c) const {return ((mazeMap[r][c] >= 97 && mazeMap[r][c] <= 122) || mazeMap[r][c] == '^');};
-bool Maze::target(int r, int c) const {return (r == target_r && c == target_c);};
-bool Maze::door(int r, int c) const {
+bool Maze::wall(size_t r, size_t c) const {return (mazeMap[r][c] == '#' || !door(r,c));};
+bool Maze::button(size_t r, size_t c) const {return ((mazeMap[r][c] >= 97 && mazeMap[r][c] <= 122) || mazeMap[r][c] == '^');};
+bool Maze::target(size_t r, size_t c) const {return (r == target_r && c == target_c);};
+bool Maze::door(size_t r, size_t c) const {
     if (mazeMap[r][c] >= 65 && mazeMap[r][c] <= 90) {
         return (mazeMap[r][c] == openDoor);
     } else return false;
 }
 
-void Maze::press(int r, int c) {
-    if (mazeMap[r][c] == '^') {
-            openDoor = 0;
-        } else openDoor = mazeMap[r][c] - 32;
-}
+size_t Maze::startRow() {return start_r;}
+size_t Maze::startCol() {return start_c;}
 
-player::player(int r, int c, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
+player::player(size_t r, size_t c, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
     current_state.row = r;
     current_state.col = c;
     current_state.color = '^';
@@ -99,7 +127,7 @@ player::player(int r, int c, vector<vector<vector<bool> > > &discoverMap, Maze &
 }
 
 bool Maze::solve(state start) {
-    player observer = player(start_r, start_c, discoverMap, *this);
+    player observer = player(start.row, start.col, discoverMap, *this);
     while(!observer.empty()) {
         if (observer.current_state.row == target_r && observer.current_state.col) {
             return true;
@@ -134,19 +162,19 @@ void Maze::mapOut() {
 }
 
 void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
-    if (x.row >= width || x.col >= height || x.color >= (num_colors + 97)) {
+    if (x.row >= y.width || x.col >= y.height || x.color - 0 >= int(y.num_colors + 97)) {
         return;
     } else if (!y.checkDiscover(x) && !y.wall(x.row, x.col)) {
         if(!style) {
             search_container.push_back(x);
         } else if (style) {
             search_container.push_front(x);
-        } discoverMap[x.row][x.col][x.color - 97] = true;
+        } discoverMap[x.row][x.col][size_t(x.color - 97)] = true;
     } 
 }
 
 bool Maze::checkDiscover(state x){
-    return discoverMap[x.row][x.col][x.color - 97];
+    return discoverMap[x.row][x.col][size_t(x.color - 97)];
 }
 
 bool player::checkButton(state x, Maze &y){
