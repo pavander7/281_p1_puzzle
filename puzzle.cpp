@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
 
     //create map and player
     Maze map = Maze();
-    player explorer = player(map.startRow(), map.startCol(), map.Width(), map.Height(), map.numColors(), (dataType == 1));
+    player explorer = player(map.startRow(), map.startCol(), map.discoverMap, map);
 
 
     //search alg

@@ -35,6 +35,7 @@ public:
     void mapOut();
 
     bool checkDiscover(state x);
+    vector<vector<vector<bool> > > discoverMap;
 
 private:
     int num_colors;
@@ -43,7 +44,6 @@ private:
     int target_r, target_c;
     char openDoor;
     vector<vector<char> > mazeMap;
-    vector<vector<vector<bool> > > discoverMap;
     deque<state> path;
 
 };

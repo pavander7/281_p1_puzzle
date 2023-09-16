@@ -133,7 +133,7 @@ void Maze::mapOut() {
     }
 }
 
-void Maze::player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
+void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
     if (x.row >= width || x.col >= height || x.color >= (num_colors + 97)) {
         return;
     } else if (!y.checkDiscover(x) && !y.wall(x.row, x.col)) {
@@ -149,13 +149,13 @@ bool Maze::checkDiscover(state x){
     return discoverMap[x.row][x.col][x.color - 97];
 }
 
-bool Maze::player::checkButton(state x, Maze &y){
+bool player::checkButton(state x, Maze &y){
     if (!y.checkDiscover(x)) {
         return true;
     } else return false;
 }
 
-void Maze::player::investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
+void player::investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
     if (button && checkButton(current_state, y)) {
         discover({current_state.color, current_state.row, current_state.col}, discoverMap, y);
     } else {
@@ -168,6 +168,6 @@ void Maze::player::investigate(bool button, vector<vector<vector<bool> > > &disc
     current_state = search_container.front();
 }
 
-bool Maze::player::empty() {
+bool player::empty() {
     return search_container.empty();
 }
