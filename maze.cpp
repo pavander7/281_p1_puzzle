@@ -22,84 +22,67 @@ Maze::Maze(){
     int maxDoor = 64 + int(num_colors);
     int maxButton = 96 + int(num_colors);
     string junk;
-    getline(cin,junk);
-    cout << "discarded: " << junk << endl;
-    while (junk[0] == '/') {
-        getline(cin,junk);
-        cout << "discarded: " << junk << endl;
-    } for (size_t c = 0; c < width; c++) {
-        cout << "moving on" << endl;
-        mazeMap[0][c] = junk[c];
-        cout << mazeMap[0][c];
-        if (mazeMap[0][c] == '@') {
-            if (startInit) {
-                cerr << "Error: Puzzle must have only one start and one target";
-                assert(false);
-            }
-            start_r = 0;
-            start_c = c;
-            startInit = true;
-        } else if (mazeMap[0][c] == '?') {
-            if (targetInit) {
-                cerr << "Error: Puzzle must have only one start and one target";
-                assert(false);
-            }
-            target_r = 0;
-            target_c = c;
-            targetInit = true;
-        } else if (mazeMap[0][c] <= 'a' && mazeMap [0][c] >= 'z') {
-            if ((mazeMap[0][c] - 0) > (maxButton)) {
-                cerr << "Error: Invalid button in map";
-                assert(false);
-            }
-        } else if (mazeMap[0][c] <= 'A' && mazeMap [0][c] >= 'A') {
-            if ((mazeMap[0][c] - 0) > (maxDoor)) {
-                cerr << "Error: Invalid door in map";
-                assert(false);
-            }
-        } else if (mazeMap[0][c] == '.' || mazeMap [0][c] >= '#' || mazeMap[0][c] == '^');
-        else {
-            cerr << "Error: Invalid character in map";
-            cout << "broken: " << mazeMap[0][c] << endl;
-            assert(false);
+    getline(cin, junk);
+    size_t r = 0;
+    while (r < height) {
+        cout << endl;
+        string line;
+        if (r == height - 1) {
+            char temp;
+            //cout << "begin final line: " << endl;
+            for (size_t i = 0; i < width; i++) {
+                cin >> temp;
+                //cout << temp << endl;
+                line.push_back(temp);
+            } 
+            //cout << "hi";
+        } else {
+            getline(cin,line);
         }
-    }
-    for (size_t r = 0; r < height; r++) {
-        for (size_t c = 0; r < width; c++) {
-            cin >> mazeMap[r][c];
-            cout << mazeMap[r][c];
-            if (mazeMap[r][c] == '@') {
-                if (startInit) {
-                    cerr << "Error: Puzzle must have only one start and one target";
+        if (line[0] == '/') {
+            cout << "comment detected";
+        } else {
+            //cout << ": ";
+            for (size_t c = 0; c < width; c++) {
+                mazeMap[r][c] = line[c];
+                cout << line[c];
+                if (r == height - 1 && c == width -1) {
+                    cout << endl << "the final character is: " << mazeMap[r][c] << endl;
+                }
+                if (mazeMap[r][c] == '@') {
+                    if (startInit) {
+                        cerr << "Error: Puzzle must have only one start and one target";
+                        assert(false);
+                    }
+                    start_r = r;
+                    start_c = c;
+                    startInit = true;
+                } else if (mazeMap[r][c] == '?') {
+                    if (targetInit) {
+                        cerr << "Error: Puzzle must have only one start and one target";
+                        assert(false);
+                    } else {
+                        target_r = r;
+                        target_c = c;
+                        targetInit = true;
+                    }
+                } else if (mazeMap[r][c] >= 'a' && mazeMap [r][c] <= 'z') {
+                    if ((mazeMap[r][c] - 0) > (maxButton)) {
+                        cerr << "Error: Invalid button in map";
+                        assert(false);
+                    }
+                } else if (mazeMap[r][c] <= 'Z' && mazeMap [r][c] >= 'A') {
+                    if ((mazeMap[r][c] - 0) > (maxDoor)) {
+                        cerr << "Error: Invalid door in map";
+                        assert(false);
+                    }
+                } else if (mazeMap[r][c] == '.' || mazeMap [r][c] == '#' || mazeMap[r][c] == '^');
+                else {
+                    cerr << "Error: Invalid character in map";
+                    cout << "broken: " << mazeMap[r][c] << endl;
                     assert(false);
                 }
-                start_r = r;
-                start_c = c;
-                startInit = true;
-            } else if (mazeMap[r][c] == '?') {
-                if (targetInit) {
-                    cerr << "Error: Puzzle must have only one start and one target";
-                    assert(false);
-                }
-                target_r = r;
-                target_c = c;
-                targetInit = true;
-            } else if (mazeMap[r][c] <= 'a' && mazeMap [r][c] >= 'z') {
-                if ((mazeMap[r][c] - 0) > (maxButton)) {
-                    cerr << "Error: Invalid button in map";
-                    assert(false);
-                }
-            } else if (mazeMap[r][c] <= 'A' && mazeMap [r][c] >= 'A') {
-                if ((mazeMap[r][c] - 0) > (maxDoor)) {
-                    cerr << "Error: Invalid door in map";
-                    assert(false);
-                }
-            } else if (mazeMap[r][c] == '.' || mazeMap [r][c] >= '#' || mazeMap[r][c] == '^');
-            else {
-                cerr << "Error: Invalid character in map";
-                cout << "broken: " << mazeMap[r][c] << endl;
-                assert(false);
-            }
+            } r++; 
         }
     } if (!startInit || !targetInit) {
         cerr << "Error: Puzzle must have exactly one start and one target";

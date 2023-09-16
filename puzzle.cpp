@@ -58,6 +58,7 @@ int main(int argc, char* argv[]) {
 
     //create map and player
     Maze map = Maze();
+    cout << "hiya";
     player explorer = player(map.startRow(), map.startCol(), map.discoverMap, map);
     cout << "hello";
     map.solve(explorer.current_state);
