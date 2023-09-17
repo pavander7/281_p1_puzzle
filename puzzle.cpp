@@ -63,7 +63,8 @@ int main(int argc, char* argv[]) {
     cout << "hello";
     map.solve(explorer.current_state);
     cout << "hello";
-    map.listOut();
+    if (outputType == 1);
+        map.listOut();
     cout << "hello";
     //if (outputType) map.mapOut();
     //else map.listOut();
