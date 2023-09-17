@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
 
     //used to track data type, 2 signifies unknown
     size_t dataType = 2;
-    size_t outputType = 2;
+    size_t outputType;
 
     //input parsing
     int c = getopt_long(argc, argv, "hqso:", long_options, &option_index);
