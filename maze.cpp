@@ -107,7 +107,7 @@ size_t Maze::startCol() {return start_c;}
 player::player(size_t r, size_t c, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
     current_state.row = r;
     current_state.col = c;
-    current_state.color = '^';
+    current_state.color = 'a';
     discover(current_state, discoverMap, y);
 }
 
@@ -154,12 +154,12 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
             search_container.push_back(x);
         } else if (style) {
             search_container.push_front(x);
-        } discoverMap[x.row][x.col][size_t(x.color - 96)] = true;
+        } discoverMap[x.row][x.col][size_t(x.color - 97)] = true;
     } 
 }
 
 bool Maze::checkDiscover(state x){
-    return discoverMap[x.row][x.col][size_t(x.color - 96)];
+    return discoverMap[x.row][x.col][size_t(x.color - 97)];
 }
 
 bool player::checkButton(state x, Maze &y){
