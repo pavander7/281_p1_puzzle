@@ -3,13 +3,14 @@
 #include "maze.h"
 #include <iostream>
 
+
 using namespace std;
 
 Maze::Maze(){
     cin >> num_colors >> height >> width;
     mazeMap = vector<vector<char> >(height, vector<char>(width, '.'));
     discoverMap = vector<vector<vector<bool> > >(height, vector<vector<bool>>(num_colors, vector<bool>(width, false)));
-    if (num_colors < 0 || num_colors > 26) {
+    if (num_colors > 26) {
         cerr << "Error: Invalid numColor";
         assert(false);
     } if (width <= 1) {
