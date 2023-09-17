@@ -58,17 +58,13 @@ int main(int argc, char* argv[]) {
 
     //create map and player
     Maze map = Maze();
-    cout << "hiya";
-    player explorer = player(map.startRow(), map.startCol(), map.discoverMap, map);
-    cout << "hello";
-    map.solve(explorer.current_state);
-    cout << "hello";
+    //player explorer = player(map.startRow(), map.startCol(), map.discoverMap, map);
+    map.solve({'^',map.startRow(),map.startCol()});
     if (outputType == 1) {
         map.listOut();
     } else {
         cout << "not yet implemented";
     }
-    cout << "hello";
     //if (outputType) map.mapOut();
     //else map.listOut();
     

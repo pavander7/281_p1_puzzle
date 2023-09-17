@@ -46,7 +46,7 @@ private:
 
 class player {
         public:
-            player(size_t r, size_t c, vector<vector<vector<bool> > > &discoverMap, Maze &y);
+            player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y);
             void discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze &y);
             
             bool checkButton(state x, Maze &y);
