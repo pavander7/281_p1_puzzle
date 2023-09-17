@@ -63,8 +63,11 @@ int main(int argc, char* argv[]) {
     cout << "hello";
     map.solve(explorer.current_state);
     cout << "hello";
-    if (outputType == 1);
+    if (outputType == 1) {
         map.listOut();
+    } else {
+        cout << "not yet implemented";
+    }
     cout << "hello";
     //if (outputType) map.mapOut();
     //else map.listOut();
