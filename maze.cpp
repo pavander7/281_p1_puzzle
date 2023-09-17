@@ -9,7 +9,15 @@ using namespace std;
 Maze::Maze(){
     cin >> num_colors >> height >> width;
     mazeMap = vector<vector<char> >(height, vector<char>(width, '.'));
-    discoverMap = vector<vector<vector<bool> > >(height, vector<vector<bool>>(num_colors, vector<bool>(width, false)));
+    discoverMap = vector<vector<vector<bool> > >(height, vector<vector<bool>>(width, vector<bool>(num_colors, false)));
+    for (size_t q = 0; q < num_colors; q++) {
+        cout << "color " << q << " :" << endl;
+        for (size_t r = 0; r < height; r++) {
+            for (size_t c = 0; c < width; c++) {
+                cout << discoverMap[r][c][q];
+            } cout << endl;
+        } cout << endl;
+    }
     if (num_colors > 26) {
         cerr << "Error: Invalid numColor";
         assert(false);
