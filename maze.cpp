@@ -19,7 +19,8 @@ Maze::Maze(){
         cerr << "Error: Invalid height";
     }
     openDoor = 0;
-    bool startInit, targetInit = false;
+    bool startInit = false;
+    bool targetInit = false;
     int maxDoor = 64 + int(num_colors);
     int maxButton = 96 + int(num_colors);
     string junk;
@@ -153,12 +154,12 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
             search_container.push_back(x);
         } else if (style) {
             search_container.push_front(x);
-        } discoverMap[x.row][x.col][size_t(x.color - 97)] = true;
+        } discoverMap[x.row][x.col][size_t(x.color - 96)] = true;
     } 
 }
 
 bool Maze::checkDiscover(state x){
-    return discoverMap[x.row][x.col][size_t(x.color - 97)];
+    return discoverMap[x.row][x.col][size_t(x.color - 96)];
 }
 
 bool player::checkButton(state x, Maze &y){
