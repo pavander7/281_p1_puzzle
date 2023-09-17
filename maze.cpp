@@ -97,7 +97,7 @@ Maze::Maze(){
     } if (!startInit || !targetInit) {
         cerr << "Error: Puzzle must have exactly one start and one target";
         assert(false);
-    }
+    } path.push_front({'^', target_r, target_c});
 }
 
 bool Maze::wall(size_t r, size_t c) const {return (mazeMap[r][c] == '#' || !door(r,c));};
