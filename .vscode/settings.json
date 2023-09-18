@@ -5,6 +5,9 @@
         "vector": "cpp",
         "deque": "cpp",
         "string": "cpp",
-        "istream": "cpp"
+        "istream": "cpp",
+        "__split_buffer": "cpp",
+        "array": "cpp",
+        "string_view": "cpp"
     }
 }

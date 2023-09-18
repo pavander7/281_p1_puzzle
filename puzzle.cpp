@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
     Maze map = Maze(dataType == 1);
     size_t q = map.solve({'^',map.startRow(),map.startCol()}, true);
     if (q == 1) {
-        cout << "solve failed" << endl;
+        cout << "no solution found" << endl;
     } else if (q == 2) {
         cout << "algortihm failed" << endl;
     } else {

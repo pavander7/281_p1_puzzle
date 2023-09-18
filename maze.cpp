@@ -140,14 +140,17 @@ size_t Maze::solve(state start, bool root) {
         cout << "starting new solve instance" << endl;
         if (observer.front().row == target_r && observer.front().col == target_c) {
             cout << "target found" << endl;
+            path.push_back(start);
+            path.pop_front();
             return 0;
         } 
         bool isButton = button(start);
         observer.investigate(isButton, discoverMap, *this);
         cout << "investigate finished on " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" << endl;
+        //state place = observer.front();
         if (solve(observer.front(), false) == 0) {
-            path.push_front(observer.front());
+            path.push_front(start);
             cout << "updating path" << endl;
             return 0;
         } else {
@@ -159,9 +162,6 @@ size_t Maze::solve(state start, bool root) {
 }
 
 void Maze::listOut() {
-    cout << "(" << path.front().color << ", (" << 
-            path.front().row << ", " << path.front().col << "))";
-    path.pop_front();
     while(!path.empty()) {
         cout << endl << "(" << path.front().color << ", (" << 
             path.front().row << ", " << path.front().col << "))";
@@ -228,16 +228,17 @@ void player::investigate(bool button, vector<vector<vector<bool> > > &discoverMa
         discover({front().color, front().row, front().col}, discoverMap, y);
     } else {
         cout << "investigating surroundings" << endl;
-        if (front().row > 0)
-            discover({front().color, front().row - 1, front().col}, discoverMap, y); //north
-        if (front().col < y.width)
-            discover({front().color, front().row, front().col + 1}, discoverMap, y); //east
-        if (front().row < y.height)
-            discover({front().color, front().row + 1, front().col}, discoverMap, y); //south
-        if (front().col > 0)
-            discover({front().color, front().row, front().col - 1}, discoverMap, y); //west
+        state place = front();
+        search_container.pop_front();
+        if (place.row > 0)
+            discover({place.color, place.row - 1, place.col}, discoverMap, y); //north
+        if (place.col < y.width)
+            discover({place.color, place.row, place.col + 1}, discoverMap, y); //east
+        if (place.row < y.height)
+            discover({place.color, place.row + 1, place.col}, discoverMap, y); //south
+        if (place.col > 0)
+            discover({place.color, place.row, place.col - 1}, discoverMap, y); //west
     }
-    search_container.pop_front();
     current_state = search_container.front();
 }
 
