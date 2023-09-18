@@ -19,7 +19,7 @@ Maze::Maze(bool styleIn){
             } cout << endl;
         } cout << endl;
     } 
-        cout << "color " << num_colors+1 << "(trap) :" << endl;
+        cout << "color " << num_colors << " (trap) :" << endl;
         for (size_t r = 0; r < height; r++) {
             for (size_t c = 0; c < width; c++) {
                 cout << discoverMap[r][c][num_colors + 1];
@@ -197,7 +197,7 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
             cout << "pushed front " << "(" << search_container.front().color << ", (" << 
                     search_container.front().row << ", " << search_container.front().col << "))" << endl; 
         } if (x.color == '^') {
-            discoverMap[x.row][x.col][y.num_colors + 1] = true;
+            discoverMap[x.row][x.col][y.num_colors] = true;
         } else discoverMap[x.row][x.col][size_t(x.color - 97)] = true;
     } else {
         cout << "how did I get here" << endl;
@@ -209,7 +209,7 @@ bool Maze::checkDiscover(state x){
         return true;
     } else {
         if (x.color == '^') {
-            return discoverMap[x.row][x.col][num_colors + 1];
+            return discoverMap[x.row][x.col][num_colors];
         } else return discoverMap[x.row][x.col][size_t(x.color - 97)];
     }
 }
