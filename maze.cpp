@@ -146,7 +146,7 @@ size_t Maze::solve(state start, bool root) {
         observer.investigate(isButton, discoverMap, *this);
         cout << "investigate finished on " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" << endl;
-        if (solve(observer.current_state, false) == 0) {
+        if (solve(observer.front(), false) == 0) {
             path.push_front(observer.current_state);
             cout << "updating path" << endl;
             return 0;
@@ -185,7 +185,7 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
                     << x.row << ", " << x.col << "))" 
                     << endl;
     if (x.row >= y.height || x.col >= y.width || x.color - 0 >= int(y.num_colors + 97)) {
-        cout << "shouldn't be here" << endl;
+        cout << "discarding: off map" << endl;
         return;
     } else if (!y.checkDiscover(x) && !y.wall(x)) { 
         cout << "checking..." << endl;
@@ -201,7 +201,7 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
             discoverMap[x.row][x.col][y.num_colors] = true;
         } else discoverMap[x.row][x.col][size_t(x.color - 97)] = true;
     } else {
-        cout << "how did I get here" << endl;
+        cout << "discarding: already discovered" << endl;
     }
 }
 
@@ -243,4 +243,8 @@ void player::investigate(bool button, vector<vector<vector<bool> > > &discoverMa
 
 bool player::empty() {
     return search_container.empty();
+}
+
+state player::front() {
+    return search_container.front();
 }

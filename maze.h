@@ -46,7 +46,7 @@ class player {
         public:
             player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y, bool root);
             void discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze &y);
-            
+            state front();
             bool checkButton(state x, Maze &y);
             void investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y);
             bool empty();
