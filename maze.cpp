@@ -144,8 +144,11 @@ size_t Maze::solve(state start, bool root) {
             path.pop_front();
             return 0;
         } 
-        bool isButton = button(start);
-        observer.investigate(isButton, discoverMap, *this);
+        if (observer.investigate(button(start), discoverMap, *this)) {
+            cout << "branch failed from " << "(" << start.color << ", ("
+                    << start.row << ", " << start.col << "))" << endl;
+            return 1;
+        }
         cout << "investigate finished on " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" << endl;
         //state place = observer.front();
@@ -153,11 +156,7 @@ size_t Maze::solve(state start, bool root) {
             path.push_front(start);
             cout << "updating path" << endl;
             return 0;
-        } else {
-            cout << "branch failed from " << "(" << start.color << ", ("
-                    << start.row << ", " << start.col << "))" << endl;
-            return 1;
-        } 
+        }
     } return 2;
 }
 
@@ -180,15 +179,14 @@ void Maze::mapOut() {
     }
 }
 
-void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
+bool player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
     cout << "starting discover instance on " << "(" << x.color << ", ("
                     << x.row << ", " << x.col << "))" 
                     << endl;
     if (x.row >= y.height || x.col >= y.width || x.color - 0 >= int(y.num_colors + 97)) {
         cout << "discarding: off map" << endl;
-        return;
+        return false;
     } else if (!y.checkDiscover(x) && !y.wall(x)) { 
-        cout << "checking..." << endl;
         if(!style) {
             search_container.push_back(x);
             cout << "discovered (back) " << "(" << search_container.back().color << ", (" << 
@@ -200,8 +198,10 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
         } if (x.color == '^') {
             discoverMap[x.row][x.col][y.num_colors] = true;
         } else discoverMap[x.row][x.col][size_t(x.color - 97)] = true;
+        return true;
     } else {
         cout << "discarding: already discovered" << endl;
+        return false;
     }
 }
 
@@ -221,25 +221,27 @@ bool player::checkButton(state x, Maze &y){
     } else return false;
 }
 
-void player::investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
+bool player::investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
     cout << "starting investigate instance" << endl;
+    bool find = false;
     if (button && checkButton(front(), y)) {
         cout << "investigating button" << endl;
-        discover({front().color, front().row, front().col}, discoverMap, y);
+        find = discover({front().color, front().row, front().col}, discoverMap, y);
     } else {
         cout << "investigating surroundings" << endl;
         state place = front();
         search_container.pop_front();
         if (place.row > 0)
-            discover({place.color, place.row - 1, place.col}, discoverMap, y); //north
+            if (discover({place.color, place.row - 1, place.col}, discoverMap, y)) find = true; //north
         if (place.col < y.width)
-            discover({place.color, place.row, place.col + 1}, discoverMap, y); //east
+            if (discover({place.color, place.row, place.col + 1}, discoverMap, y)) find = true; //east
         if (place.row < y.height)
-            discover({place.color, place.row + 1, place.col}, discoverMap, y); //south
+            if (discover({place.color, place.row + 1, place.col}, discoverMap, y)) find = true; //south
         if (place.col > 0)
-            discover({place.color, place.row, place.col - 1}, discoverMap, y); //west
+            if (discover({place.color, place.row, place.col - 1}, discoverMap, y)) find = true; //west
     }
     current_state = search_container.front();
+    return find;
 }
 
 bool player::empty() {
