@@ -127,6 +127,7 @@ player::player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze 
         discover(current_state, discoverMap, y);
     } else {
         cout << "known start position" << endl;
+        search_container.push_back(current_state);
     }
 }
 
@@ -134,7 +135,7 @@ size_t Maze::solve(state start, bool root) {
     cout << "solve on " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" 
                     << endl;
-    player observer = player({start.color, start.row, start.col}, discoverMap, *this, root);
+    player observer = player(start, discoverMap, *this, root);
     while(!observer.empty()) {
         cout << "starting new solve instance" << endl;
         if (observer.current_state.row == target_r && observer.current_state.col == target_c) {
