@@ -58,14 +58,18 @@ int main(int argc, char* argv[]) {
 
     //create map and player
     Maze map = Maze(dataType == 1);
-    //player explorer = player(map.startRow(), map.startCol(), map.discoverMap, map);
-    map.solve({'^',map.startRow(),map.startCol()}, true);
-    if (outputType == 1) {
-        map.listOut();
+    size_t q = map.solve({'^',map.startRow(),map.startCol()}, true);
+    if (q == 1) {
+        cout << "solve failed" << endl;
+    } else if (q == 2) {
+        cout << "algortihm failed" << endl;
     } else {
-        cout << "not yet implemented";
+        cout << "solve successful, output:" << endl;
+        if (outputType == 1) {
+            map.listOut();
+        } else {
+            cout << "not yet implemented";
+        }
     }
-    //if (outputType) map.mapOut();
-    //else map.listOut();
     
 }

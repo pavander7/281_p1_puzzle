@@ -12,19 +12,19 @@ Maze::Maze(bool styleIn){
     mazeMap = vector<vector<char> >(height, vector<char>(width, '.'));
     discoverMap = vector<vector<vector<bool> > >(height, vector<vector<bool>>(width, vector<bool>(num_colors + 1, false)));
     for (size_t q = 0; q < num_colors; q++) {
-        cout << "color " << q << " :" << endl;
+        cout << "color " << q << ":" << endl;
         for (size_t r = 0; r < height; r++) {
             for (size_t c = 0; c < width; c++) {
                 cout << discoverMap[r][c][q];
             } cout << endl;
         } cout << endl;
     } 
-        cout << "color " << num_colors << " (trap) :" << endl;
+        cout << "color " << num_colors << " (trap):" << endl;
         for (size_t r = 0; r < height; r++) {
             for (size_t c = 0; c < width; c++) {
                 cout << discoverMap[r][c][num_colors];
             } cout << endl;
-        } cout << endl;
+        }
     if (num_colors > 26) {
         cerr << "Error: Invalid numColor";
         assert(false);
@@ -33,11 +33,10 @@ Maze::Maze(bool styleIn){
     } if (height < 1) {
         cerr << "Error: Invalid height";
     }
-    openDoor = '^';
     bool startInit = false;
     bool targetInit = false;
-    int maxDoor = 64 + int(num_colors);
-    int maxButton = 96 + int(num_colors);
+    size_t maxDoor = 64 + num_colors;
+    size_t maxButton = 96 + num_colors;
     string junk;
     getline(cin, junk);
     size_t r = 0;
@@ -191,11 +190,11 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
         cout << "checking..." << endl;
         if(!style) {
             search_container.push_back(x);
-            cout << "pushed back " << "(" << search_container.back().color << ", (" << 
+            cout << "discovered (back) " << "(" << search_container.back().color << ", (" << 
                     search_container.back().row << ", " << search_container.back().col << "))" << endl; 
         } else if (style) {
             search_container.push_front(x);
-            cout << "pushed front " << "(" << search_container.front().color << ", (" << 
+            cout << "discovered (front) " << "(" << search_container.front().color << ", (" << 
                     search_container.front().row << ", " << search_container.front().col << "))" << endl; 
         } if (x.color == '^') {
             discoverMap[x.row][x.col][y.num_colors] = true;

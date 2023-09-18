@@ -37,7 +37,6 @@ private:
     size_t height, width;
     size_t start_r, start_c;
     size_t target_r, target_c;
-    char openDoor;
     vector<vector<char> > mazeMap;
     deque<state> path;
     bool style;
