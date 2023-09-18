@@ -121,14 +121,19 @@ player::player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze 
 }
 
 bool Maze::solve(state start) {
+    cout << "solve on " << "(" << start.color << ", ("
+                    << start.row << ", " << start.col << "))" 
+                    << endl;
     player observer = player({start.color, start.row, start.col}, discoverMap, *this);
-    cout << "hello from solve" << endl;
     while(!observer.empty()) {
         cout << "starting new solve instance" << endl;
         if (observer.current_state.row == target_r && observer.current_state.col) {
+            cout << "target found" << endl;
             return true;
         } 
         observer.investigate(button(observer.current_state.row, observer.current_state.col), discoverMap, *this);
+        cout << "investigate finished on " << "(" << start.color << ", ("
+                    << start.row << ", " << start.col << "))" << endl;
         if (solve(observer.current_state)) {
             path.push_front(observer.current_state);
             cout << "updating path" << endl;
@@ -175,6 +180,8 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
                     search_container.back().row << ", " << search_container.back().col << "))" << endl; 
         } else if (style) {
             search_container.push_front(x);
+            cout << "pushed front " << "(" << search_container.back().color << ", (" << 
+                    search_container.back().row << ", " << search_container.back().col << "))" << endl; 
         } discoverMap[x.row][x.col][size_t(x.color - 97)] = true;
     } else {
         cout << "how did I get here" << endl;
