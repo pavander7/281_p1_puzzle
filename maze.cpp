@@ -22,7 +22,7 @@ Maze::Maze(bool styleIn){
         cout << "color " << num_colors << " (trap) :" << endl;
         for (size_t r = 0; r < height; r++) {
             for (size_t c = 0; c < width; c++) {
-                cout << discoverMap[r][c][num_colors + 1];
+                cout << discoverMap[r][c][num_colors];
             } cout << endl;
         } cout << endl;
     if (num_colors > 26) {
