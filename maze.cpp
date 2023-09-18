@@ -35,8 +35,8 @@ Maze::Maze(bool styleIn){
     }
     bool startInit = false;
     bool targetInit = false;
-    size_t maxDoor = 64 + num_colors;
-    size_t maxButton = 96 + num_colors;
+    int maxDoor = 64 + int(num_colors);
+    int maxButton = 96 + int(num_colors);
     string junk;
     getline(cin, junk);
     size_t r = 0;
