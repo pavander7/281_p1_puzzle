@@ -145,8 +145,9 @@ bool Maze::solve(state start, bool root) {
         } else {
             cout << "branch failed from " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" << endl;
+            return false;
         }
-    } return false;
+    } 
 }
 
 void Maze::listOut() {
