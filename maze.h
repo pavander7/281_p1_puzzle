@@ -8,9 +8,16 @@
 using namespace std;
 
 struct state {
-        char color;
-        size_t row;
-        size_t col;
+    char color;
+    size_t row;
+    size_t col;
+};
+
+struct node {
+    state datum;
+    node* prev;
+    vector<node*> next;
+    void evacuate();
 };
 
 class Maze {
@@ -24,8 +31,8 @@ public:
     bool button(state x) const;
     bool door(state x) const;
 
-    size_t solve(state start, bool root);
-    void listOut();
+    node* solve(state start, bool root);
+    void listOut(node* begin);
     void mapOut();
 
     bool checkDiscover(state x);
@@ -38,20 +45,21 @@ private:
     size_t start_r, start_c;
     size_t target_r, target_c;
     vector<vector<char> > mazeMap;
-    deque<state> path;
     bool style;
 };
 
 class player {
         public:
             player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y, bool root);
-            bool discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze &y);
-            state front();
+            bool discover(state x, node* origin, vector<vector<vector<bool> > > &discoverMap, Maze &y);
+            node* frontPoint();
+            node front();
             bool checkButton(state x, Maze &y);
             bool investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y);
             bool empty();
             state current_state;
         private:
-            deque<state> search_container;
+            deque<node*> search_container;
+            node begin;
             bool style;
     };
