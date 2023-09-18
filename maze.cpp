@@ -113,7 +113,9 @@ size_t Maze::startCol() {return start_c;}
 
 player::player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
     style = y.style;
-    current_state = startIn;
+    current_state.row = startIn.row;
+    current_state.col = startIn.col;
+    current_state.color = startIn.color;
     if (!y.checkDiscover(current_state)) {
         cout << "discovering start position" << endl;
         discover(current_state, discoverMap, y);
