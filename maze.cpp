@@ -177,7 +177,7 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
 }
 
 bool Maze::checkDiscover(state x){
-    if (x.row >= width || x.col >= height || x.color - 0 >= int(num_colors + 97) || x.row < 0 || x.col < 0) {
+    if (x.row >= width || x.col >= height || x.color - 0 >= int(num_colors + 97)) {
         return true;
     } else return discoverMap[x.row][x.col][size_t(x.color - 97)];
 }
@@ -197,11 +197,11 @@ void player::investigate(bool button, vector<vector<vector<bool> > > &discoverMa
         cout << "investigating surroundings" << endl;
         if (current_state.row > 0)
             discover({current_state.color, current_state.row - 1, current_state.col}, discoverMap, y); //north
-        if (current_state.col > 0)
+        if (current_state.col < 0)
             discover({current_state.color, current_state.row, current_state.col + 1}, discoverMap, y); //east
         if (current_state.row < y.height)
             discover({current_state.color, current_state.row + 1, current_state.col}, discoverMap, y); //south
-        if (current_state.col < y.width)
+        if (current_state.col > y.width)
             discover({current_state.color, current_state.row, current_state.col - 1}, discoverMap, y); //west
     }
     search_container.pop_front();
