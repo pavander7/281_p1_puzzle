@@ -25,7 +25,7 @@ public:
     bool target(size_t r, size_t c) const;
     bool door(size_t r, size_t c) const;
 
-    bool solve(state start);
+    bool solve(state start, bool root);
     void listOut();
     void mapOut();
 
@@ -46,7 +46,7 @@ private:
 
 class player {
         public:
-            player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y);
+            player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y, bool root);
             void discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze &y);
             
             bool checkButton(state x, Maze &y);

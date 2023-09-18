@@ -111,12 +111,12 @@ bool Maze::door(size_t r, size_t c) const {
 size_t Maze::startRow() {return start_r;}
 size_t Maze::startCol() {return start_c;}
 
-player::player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
+player::player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y, bool root) {
     style = y.style;
     current_state.row = startIn.row;
     current_state.col = startIn.col;
     current_state.color = startIn.color;
-    if (!y.checkDiscover(current_state)) {
+    if (root) {
         cout << "discovering start position" << endl;
         discover(current_state, discoverMap, y);
     } else {
@@ -124,11 +124,11 @@ player::player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze 
     }
 }
 
-bool Maze::solve(state start) {
+bool Maze::solve(state start, bool root) {
     cout << "solve on " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" 
                     << endl;
-    player observer = player({start.color, start.row, start.col}, discoverMap, *this);
+    player observer = player({start.color, start.row, start.col}, discoverMap, *this, root);
     while(!observer.empty()) {
         cout << "starting new solve instance" << endl;
         if (observer.current_state.row == target_r && observer.current_state.col == target_c) {
@@ -139,7 +139,7 @@ bool Maze::solve(state start) {
         observer.investigate(isButton, discoverMap, *this);
         cout << "investigate finished on " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" << endl;
-        if (solve(observer.current_state)) {
+        if (solve(observer.current_state, false)) {
             path.push_front(observer.current_state);
             cout << "updating path" << endl;
         } else {
@@ -178,7 +178,7 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
     if (x.row >= y.width || x.col >= y.height || x.color - 0 >= int(y.num_colors + 97)) {
         cout << "shouldn't be here" << endl;
         return;
-    } else if (!y.checkDiscover(x)) { // && !y.wall(x.row, x.col)
+    } else if (!y.checkDiscover(x) && !y.wall(x.row, x.col)) { 
         cout << "checking..." << endl;
         if(!style) {
             search_container.push_back(x);

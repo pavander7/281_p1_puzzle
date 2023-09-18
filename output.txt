@@ -1,6 +1,22 @@
-flag 1
-flag 1
-flag 2 115
-flag 2 111
-slay 1
-slay 2.2: 3
+color 0 :
+0000000
+0000000
+0000000
+0000000
+
+color 1 :
+0000000
+0000000
+0000000
+0000000
+
+
+comment detected
+comment detected
+comment detected
+@..A..b
+.a.#B##
+####...
+?..B.^^
+
+solve on (^, (0, 0))

@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
     //create map and player
     Maze map = Maze(dataType == 1);
     //player explorer = player(map.startRow(), map.startCol(), map.discoverMap, map);
-    map.solve({'^',map.startRow(),map.startCol()});
+    map.solve({'^',map.startRow(),map.startCol()}, true);
     if (outputType == 1) {
         map.listOut();
     } else {
