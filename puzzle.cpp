@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
     }
 
     //create map and player
-    Maze map = Maze();
+    Maze map = Maze(dataType == 1);
     //player explorer = player(map.startRow(), map.startCol(), map.discoverMap, map);
     map.solve({'^',map.startRow(),map.startCol()});
     if (outputType == 1) {

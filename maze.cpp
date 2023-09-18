@@ -6,7 +6,8 @@
 
 using namespace std;
 
-Maze::Maze(){
+Maze::Maze(bool styleIn){
+    style = styleIn;
     cin >> num_colors >> height >> width;
     mazeMap = vector<vector<char> >(height, vector<char>(width, '.'));
     discoverMap = vector<vector<vector<bool> > >(height, vector<vector<bool>>(width, vector<bool>(num_colors, false)));
@@ -111,6 +112,7 @@ size_t Maze::startRow() {return start_r;}
 size_t Maze::startCol() {return start_c;}
 
 player::player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
+    style = y.style;
     current_state = startIn;
     if (!y.checkDiscover(current_state)) {
         cout << "discovering start position" << endl;

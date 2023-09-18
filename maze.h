@@ -15,7 +15,7 @@ struct state {
 
 class Maze {
 public:
-    Maze(); //default constructor
+    Maze(bool styleIn); //default constructor
 
     size_t startRow();
     size_t startCol();
@@ -41,7 +41,7 @@ private:
     char openDoor;
     vector<vector<char> > mazeMap;
     deque<state> path;
-
+    bool style;
 };
 
 class player {
