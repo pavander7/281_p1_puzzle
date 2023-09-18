@@ -184,7 +184,7 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
     cout << "starting discover instance on " << "(" << x.color << ", ("
                     << x.row << ", " << x.col << "))" 
                     << endl;
-    if (x.row >= y.width || x.col >= y.height || x.color - 0 >= int(y.num_colors + 97)) {
+    if (x.row >= y.height || x.col >= y.width || x.color - 0 >= int(y.num_colors + 97)) {
         cout << "shouldn't be here" << endl;
         return;
     } else if (!y.checkDiscover(x) && !y.wall(x)) { 
