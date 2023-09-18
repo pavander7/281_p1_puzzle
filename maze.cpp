@@ -180,8 +180,8 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
                     search_container.back().row << ", " << search_container.back().col << "))" << endl; 
         } else if (style) {
             search_container.push_front(x);
-            cout << "pushed front " << "(" << search_container.back().color << ", (" << 
-                    search_container.back().row << ", " << search_container.back().col << "))" << endl; 
+            cout << "pushed front " << "(" << search_container.front().color << ", (" << 
+                    search_container.front().row << ", " << search_container.front().col << "))" << endl; 
         } discoverMap[x.row][x.col][size_t(x.color - 97)] = true;
     } else {
         cout << "how did I get here" << endl;
