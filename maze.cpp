@@ -147,8 +147,8 @@ size_t Maze::solve(state start, bool root) {
             cout << "branch failed from " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" << endl;
             return 1;
-        } return 2;
-    } 
+        } 
+    } return 2;
 }
 
 void Maze::listOut() {
