@@ -22,9 +22,9 @@ Maze::Maze(bool styleIn){
     if (num_colors > 26) {
         cerr << "Error: Invalid numColor";
         assert(false);
-    } if (width <= 1) {
+    } if (width < 1) {
         cerr << "Error: Invalid width";
-    } if (height <= 1) {
+    } if (height < 1) {
         cerr << "Error: Invalid height";
     }
     openDoor = 0;
