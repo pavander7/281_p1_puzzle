@@ -20,10 +20,9 @@ public:
     size_t startRow();
     size_t startCol();
 
-    bool wall(size_t r, size_t c) const; //check cells for various options
-    bool button(size_t r, size_t c) const;
-    bool target(size_t r, size_t c) const;
-    bool door(size_t r, size_t c) const;
+    bool wall(state x) const; //check cells for various options
+    bool button(state x) const;
+    bool door(state x) const;
 
     size_t solve(state start, bool root);
     void listOut();

@@ -33,7 +33,7 @@ Maze::Maze(bool styleIn){
     } if (height < 1) {
         cerr << "Error: Invalid height";
     }
-    openDoor = 0;
+    openDoor = '^';
     bool startInit = false;
     bool targetInit = false;
     int maxDoor = 64 + int(num_colors);
@@ -105,12 +105,13 @@ Maze::Maze(bool styleIn){
     cout << endl << endl;
 }
 
-bool Maze::wall(size_t r, size_t c) const {return (mazeMap[r][c] == '#' || !door(r,c));};
-bool Maze::button(size_t r, size_t c) const {return ((mazeMap[r][c] >= 97 && mazeMap[r][c] <= 122) || mazeMap[r][c] == '^');};
-bool Maze::target(size_t r, size_t c) const {return (r == target_r && c == target_c);};
-bool Maze::door(size_t r, size_t c) const {
-    if (mazeMap[r][c] >= 65 && mazeMap[r][c] <= 90) {
-        return (mazeMap[r][c] == openDoor);
+bool Maze::wall(state x) const {return (mazeMap[x.row][x.col] == '#' || door(x));}
+bool Maze::button(state x) const {
+    return ((mazeMap[x.row][x.col] >= 97 && mazeMap[x.row][x.col] <= 122) || mazeMap[x.row][x.col] == '^');
+}
+bool Maze::door(state x) const {
+    if (mazeMap[x.row][x.col] >= 65 && mazeMap[x.row][x.col] <= 90) {
+        return (mazeMap[x.row][x.col] != x.color - 32);
     } else return false;
 }
 
@@ -141,7 +142,7 @@ size_t Maze::solve(state start, bool root) {
             cout << "target found" << endl;
             return 0;
         } 
-        bool isButton = button(start.row, start.col);
+        bool isButton = button(start);
         observer.investigate(isButton, discoverMap, *this);
         cout << "investigate finished on " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" << endl;
@@ -186,7 +187,7 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
     if (x.row >= y.width || x.col >= y.height || x.color - 0 >= int(y.num_colors + 97)) {
         cout << "shouldn't be here" << endl;
         return;
-    } else if (!y.checkDiscover(x) && !y.wall(x.row, x.col)) { 
+    } else if (!y.checkDiscover(x) && !y.wall(x)) { 
         cout << "checking..." << endl;
         if(!style) {
             search_container.push_back(x);
