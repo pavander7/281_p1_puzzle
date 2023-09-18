@@ -186,7 +186,7 @@ bool player::discover(state x, node* origin, vector<vector<vector<bool> > > &dis
         return false;
     } else if (!y.checkDiscover(x) && !y.wall(x)) { 
         node* temp = new node{x, origin, {}};
-        origin->next.push_back(temp);
+        if (origin != nullptr) origin->next.push_back(temp);
         if(!style) {
             search_container.push_back(temp);
             cout << "discovered (back) " << "(" << (*search_container.back()).datum.color << ", (" << 
