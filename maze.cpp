@@ -197,11 +197,11 @@ void player::investigate(bool button, vector<vector<vector<bool> > > &discoverMa
         cout << "investigating surroundings" << endl;
         if (current_state.row > 0)
             discover({current_state.color, current_state.row - 1, current_state.col}, discoverMap, y); //north
-        if (current_state.col < 0)
+        if (current_state.col < y.width)
             discover({current_state.color, current_state.row, current_state.col + 1}, discoverMap, y); //east
         if (current_state.row < y.height)
             discover({current_state.color, current_state.row + 1, current_state.col}, discoverMap, y); //south
-        if (current_state.col > y.width)
+        if (current_state.col > 0)
             discover({current_state.color, current_state.row, current_state.col - 1}, discoverMap, y); //west
     }
     search_container.pop_front();
