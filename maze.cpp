@@ -10,7 +10,7 @@ Maze::Maze(bool styleIn){
     style = styleIn;
     cin >> num_colors >> height >> width;
     mazeMap = vector<vector<char> >(height, vector<char>(width, '.'));
-    discoverMap = vector<vector<vector<bool> > >(height, vector<vector<bool>>(width, vector<bool>(num_colors, false)));
+    discoverMap = vector<vector<vector<bool> > >(height, vector<vector<bool>>(width, vector<bool>(num_colors + 1, false)));
     for (size_t q = 0; q < num_colors; q++) {
         cout << "color " << q << " :" << endl;
         for (size_t r = 0; r < height; r++) {
@@ -18,7 +18,13 @@ Maze::Maze(bool styleIn){
                 cout << discoverMap[r][c][q];
             } cout << endl;
         } cout << endl;
-    }
+    } 
+        cout << "color " << num_colors+1 << "(trap) :" << endl;
+        for (size_t r = 0; r < height; r++) {
+            for (size_t c = 0; c < width; c++) {
+                cout << discoverMap[r][c][num_colors + 1];
+            } cout << endl;
+        } cout << endl;
     if (num_colors > 26) {
         cerr << "Error: Invalid numColor";
         assert(false);
@@ -190,7 +196,9 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
             search_container.push_front(x);
             cout << "pushed front " << "(" << search_container.front().color << ", (" << 
                     search_container.front().row << ", " << search_container.front().col << "))" << endl; 
-        } discoverMap[x.row][x.col][size_t(x.color - 97)] = true;
+        } if (x.color == '^') {
+            discoverMap[x.row][x.col][y.num_colors + 1] = true;
+        } else discoverMap[x.row][x.col][size_t(x.color - 97)] = true;
     } else {
         cout << "how did I get here" << endl;
     }
@@ -199,7 +207,11 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
 bool Maze::checkDiscover(state x){
     if (x.row >= width || x.col >= height || x.color - 0 >= int(num_colors + 97)) {
         return true;
-    } else return discoverMap[x.row][x.col][size_t(x.color - 97)];
+    } else {
+        if (x.color == '^') {
+            return discoverMap[x.row][x.col][num_colors + 1];
+        } else return discoverMap[x.row][x.col][size_t(x.color - 97)];
+    }
 }
 
 bool player::checkButton(state x, Maze &y){
