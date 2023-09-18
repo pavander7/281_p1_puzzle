@@ -94,7 +94,8 @@ Maze::Maze(){
     } if (!startInit || !targetInit) {
         cerr << "Error: Puzzle must have exactly one start and one target";
         assert(false);
-    } path.push_front({'^', target_r, target_c});
+    } path.push_front({'0', target_r, target_c});
+    cout << endl;
 }
 
 bool Maze::wall(size_t r, size_t c) const {return (mazeMap[r][c] == '#' || !door(r,c));};
@@ -111,8 +112,12 @@ size_t Maze::startCol() {return start_c;}
 
 player::player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
     current_state = startIn;
-    cout << "discovering start position" << endl;
-    discover(current_state, discoverMap, y);
+    if (!y.checkDiscover(current_state)) {
+        cout << "discovering start position" << endl;
+        discover(current_state, discoverMap, y);
+    } else {
+        cout << "known start position" << endl;
+    }
 }
 
 bool Maze::solve(state start) {
