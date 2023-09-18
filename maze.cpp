@@ -124,7 +124,7 @@ player::player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze 
     }
 }
 
-bool Maze::solve(state start, bool root) {
+size_t Maze::solve(state start, bool root) {
     cout << "solve on " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" 
                     << endl;
@@ -133,20 +133,21 @@ bool Maze::solve(state start, bool root) {
         cout << "starting new solve instance" << endl;
         if (observer.current_state.row == target_r && observer.current_state.col == target_c) {
             cout << "target found" << endl;
-            return true;
+            return 0;
         } 
         bool isButton = button(start.row, start.col);
         observer.investigate(isButton, discoverMap, *this);
         cout << "investigate finished on " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" << endl;
-        if (solve(observer.current_state, false)) {
+        if (solve(observer.current_state, false) == 0) {
             path.push_front(observer.current_state);
             cout << "updating path" << endl;
+            return 0;
         } else {
             cout << "branch failed from " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" << endl;
-            return false;
-        }
+            return 1;
+        } return 2;
     } 
 }
 

@@ -25,7 +25,7 @@ public:
     bool target(size_t r, size_t c) const;
     bool door(size_t r, size_t c) const;
 
-    bool solve(state start, bool root);
+    size_t solve(state start, bool root);
     void listOut();
     void mapOut();
 
