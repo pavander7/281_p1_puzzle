@@ -135,7 +135,8 @@ bool Maze::solve(state start) {
             cout << "target found" << endl;
             return true;
         } 
-        observer.investigate(button(observer.current_state.row, observer.current_state.col), discoverMap, *this);
+        bool isButton = button(start.row, start.col);
+        observer.investigate(isButton, discoverMap, *this);
         cout << "investigate finished on " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" << endl;
         if (solve(observer.current_state)) {
