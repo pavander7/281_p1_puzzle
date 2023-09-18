@@ -196,7 +196,7 @@ void player::discover(state x, vector<vector<vector<bool> > > &discoverMap, Maze
 bool Maze::checkDiscover(state x){
     if (x.row >= width || x.col >= height || x.color - 0 >= int(num_colors + 97)) {
         return true;
-    } else return discoverMap[x.row][x.col][0]; //size_t(x.color - 97)
+    } else return discoverMap[x.row][x.col][size_t(x.color - 97)];
 }
 
 bool player::checkButton(state x, Maze &y){
