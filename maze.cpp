@@ -95,7 +95,7 @@ Maze::Maze(){
         cerr << "Error: Puzzle must have exactly one start and one target";
         assert(false);
     } path.push_front({'0', target_r, target_c});
-    cout << endl;
+    cout << endl << endl;
 }
 
 bool Maze::wall(size_t r, size_t c) const {return (mazeMap[r][c] == '#' || !door(r,c));};
@@ -127,7 +127,7 @@ bool Maze::solve(state start) {
     player observer = player({start.color, start.row, start.col}, discoverMap, *this);
     while(!observer.empty()) {
         cout << "starting new solve instance" << endl;
-        if (observer.current_state.row == target_r && observer.current_state.col) {
+        if (observer.current_state.row == target_r && observer.current_state.col == target_c) {
             cout << "target found" << endl;
             return true;
         } 
@@ -138,7 +138,8 @@ bool Maze::solve(state start) {
             path.push_front(observer.current_state);
             cout << "updating path" << endl;
         } else {
-            cout << "branch failed" << endl;
+            cout << "branch failed from " << "(" << start.color << ", ("
+                    << start.row << ", " << start.col << "))" << endl;
         }
     } return false;
 }
