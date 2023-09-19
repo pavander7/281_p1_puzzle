@@ -163,3 +163,11 @@ bool Maze::checkDiscover(state x){
         } else return discoverMap[x.row][x.col][size_t(x.color - 97)];
     }
 }
+
+void node::evacuate() {
+    while(!next.empty()) {
+        node* temp = *next.end();
+        next.pop_back();
+        temp->evacuate();
+    }
+}

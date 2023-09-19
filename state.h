@@ -17,11 +17,3 @@ struct node {
     vector<node*> next;
     void evacuate();
 };
-
-void node::evacuate() {
-    while(!next.empty()) {
-        node* temp = *next.end();
-        next.pop_back();
-        temp->evacuate();
-    }
-}
