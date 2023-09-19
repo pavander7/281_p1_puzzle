@@ -222,7 +222,8 @@ void Maze::mapOut() {
             if (currentColor != '^') outMap[size_t(currentColor - 97)][path[u].row][path[u].col] = '%';
             else outMap[num_colors][path[u].row][path[u].col] = '%';
             currentColor = path[u+1].color;
-            outMap[size_t(path[u+1].color)][path[u].row][path[u].col] = '@';
+            if (currentColor != '^') outMap[size_t(path[u+1].color)][path[u].row][path[u].col] = '@';
+            else outMap[num_colors][path[u].row][path[u].col] = '@';
             u++;
         } else {
             if (currentColor != '^') outMap[size_t(currentColor - 97)][path[u].row][path[u].col] = '+';
