@@ -4,21 +4,11 @@
 #include <vector>
 #include <deque>
 #include <cassert>
+#include <iostream>
+#include "state.h"
+#include "player.h"
 
 using namespace std;
-
-struct state {
-    char color;
-    size_t row;
-    size_t col;
-};
-
-struct node {
-    state datum;
-    node* prev;
-    vector<node*> next;
-    void evacuate();
-};
 
 class Maze {
 public:
@@ -32,7 +22,7 @@ public:
     bool door(state x) const;
 
     node* solve(state start, bool root);
-    void listOut(node &begin);
+    void listOut(node begin);
     void mapOut();
 
     bool checkDiscover(state x);
@@ -47,19 +37,3 @@ private:
     vector<vector<char> > mazeMap;
     bool style;
 };
-
-class player {
-        public:
-            player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y, bool root);
-            bool discover(state x, node* origin, vector<vector<vector<bool> > > &discoverMap, Maze &y);
-            node* frontPoint();
-            node front();
-            bool checkButton(state x, Maze &y);
-            bool investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y);
-            bool empty();
-            state current_state;
-        private:
-            deque<node*> search_container;
-            node begin;
-            bool style;
-    };
