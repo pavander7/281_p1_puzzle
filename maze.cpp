@@ -151,17 +151,12 @@ node* Maze::solve(state start, bool root) {
         }
         cout << "investigate finished on " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" << endl;
-        /* if (solve(observer.front().datum, false) == 0) {
-            path.push_front(start);
-            cout << "updating path" << endl;
-            return 0;
-        } */
     } return nullptr;
 }
 
-void Maze::listOut(node* begin) {
+void Maze::listOut(node &begin) {
     deque<state> path;
-    node* current = begin;
+    node* current = &begin;
     while ((*current).prev != nullptr) {
         path.push_front((*current).datum);
         current->evacuate();

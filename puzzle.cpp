@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
     } else {
         cout << "solve successful, output:" << endl;
         if (outputType == 1) {
-            map.listOut(q);
+            map.listOut(*q);
         } else {
             cout << "not yet implemented";
         }

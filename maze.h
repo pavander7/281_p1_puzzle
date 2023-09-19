@@ -32,7 +32,7 @@ public:
     bool door(state x) const;
 
     node* solve(state start, bool root);
-    void listOut(node* begin);
+    void listOut(node &begin);
     void mapOut();
 
     bool checkDiscover(state x);
