@@ -134,7 +134,7 @@ void Maze::mazeOut() {
     for (size_t r = 0; r < height; r++) {
         for (size_t c = 0; c < width; c++) {
             bool discovered = false;
-            for (size_t q = 0; q < num_colors; q++) {
+            for (size_t q = 0; q <= num_colors; q++) {
                 if (discoverMap[r][c][q]) {
                     discovered = true;
                 }
