@@ -14,6 +14,6 @@ struct state {
 struct node {
     state datum;
     node* prev;
-    vector<node*> next;
-    void evacuate();
+    //vector<node*> next;
+    //void evacuate();
 };

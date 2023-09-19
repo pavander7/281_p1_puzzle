@@ -20,9 +20,10 @@ public:
     bool button(state x) const;
     bool door(state x) const;
 
-    node* solve(state start);
-    void listOut(node begin);
-    void mapOut(node begin);
+    bool solve(state start);
+
+    void listOut();
+    void mapOut();
 
     bool checkDiscover(state x);
     vector<vector<vector<bool> > > discoverMap;
@@ -38,6 +39,7 @@ private:
     size_t start_r, start_c;
     size_t target_r, target_c;
     vector<vector<char> > mazeMap;
+    deque<node> backtrace;
     bool style;
 };
 
@@ -50,7 +52,7 @@ class player {
         bool investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y);
         bool empty();
     private:
-        deque<node*> search_container;
+        deque<node> search_container;
         node begin;
         bool style;
 };

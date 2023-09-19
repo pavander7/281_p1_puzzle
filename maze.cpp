@@ -145,7 +145,7 @@ void Maze::mazeOut() {
     }
 }
 
-node* Maze::solve(state start) {
+bool Maze::solve(state start) {
     /* cout << "solve on " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" 
                     << endl; */
@@ -155,9 +155,10 @@ node* Maze::solve(state start) {
         /* cout << "solve on " << "(" << spyglass.color << ", ("
                     << spyglass.row << ", " << spyglass.col << "))" 
                     << endl; */
-        if (observer.front().datum.row == target_r && observer.front().datum.col == target_c) {
+        if (spyglass.row == target_r && spyglass.col == target_c) {
             //cout << "target found" << endl;
-            return observer.frontPoint();
+            backtrace.push_back(observer.front());
+            return true;
         } 
         if (!observer.investigate(button(spyglass), discoverMap, *this)) {
             /* cout << "branch failed from " << "(" << spyglass.color << ", ("
@@ -165,21 +166,21 @@ node* Maze::solve(state start) {
         }
         //cout << "investigate finished on " << "(" << spyglass.color << ", ("
         //            << spyglass.row << ", " << spyglass.col << "))" << endl;
-    } return nullptr;
+    } return false;
 }
 
-void Maze::listOut(node begin) {
+void Maze::listOut() {
     /* cout << "(^, (" << 
         start_r << ", " << start_c << "))" << endl; */
     deque<state> path;
-    node* current = new node{begin};
+    node* current = &(backtrace.back());
     while (current != nullptr) {
         //cout << "proccessing " << "(" << (*current).datum.color << ", ("
         //            << (*current).datum.row << ", " << (*current).datum.col << "))" << endl;
         path.push_front((*current).datum);
-        current->evacuate();
+        //current->evacuate();
         node* temp = current->prev;
-        delete current;
+        //delete current;
         current = temp;
     } for (size_t u = 0; u < path.size(); u++) {
         cout << "(" << path[u].color << ", (" << 
@@ -187,16 +188,16 @@ void Maze::listOut(node begin) {
     }
 }
 
-void Maze::mapOut(node begin) {
+void Maze::mapOut() {
     deque<state> path;
-    node* current = new node{begin};
+    node* current = &(backtrace.back());
     while (current != nullptr) {
         //cout << "proccessing " << "(" << (*current).datum.color << ", ("
         //            << (*current).datum.row << ", " << (*current).datum.col << "))" << endl;
         path.push_front((*current).datum);
-        current->evacuate();
+        //current->evacuate();
         node* temp = current->prev;
-        delete current;
+        //delete current;
         current = temp;
     } vector<vector<char> > outMap = mazeMap;
     mapReplace(outMap, '^', '.');
@@ -255,11 +256,11 @@ bool Maze::checkDiscover(state x){
     }
 }
 
-void node::evacuate() {
+/* void node::evacuate() {
     //cout << "evacuating " << "(" << datum.color << ", ("
     //                << datum.row << ", " << datum.col << ")) [" << next.size() << "]" << endl;
     for(size_t u = 0; u < next.size(); u++) {
         next[u]->evacuate();
         delete next[u];
     }
-}
+} */

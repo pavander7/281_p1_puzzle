@@ -64,16 +64,16 @@ int main(int argc, char* argv[]) {
     if (error) {
         return 1;
     }
-    node* q = map.solve({'^', map.startRow(),map.startCol()});
-    if (q == nullptr) {
+    bool q = map.solve({'^', map.startRow(),map.startCol()});
+    if (q == false) {
         cout << "No solution." << endl << "Discovered:" << endl;
         map.mazeOut();
     } else {
         //cout << "solve successful, output:" << endl;
         if (outputType == 1) {
-            map.listOut(*q);
+            map.listOut();
         } else {
-            map.mapOut(*q);
+            map.mapOut();
         }
     } return 0;
 }
