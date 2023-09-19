@@ -61,9 +61,9 @@ bool player::investigate(bool button, vector<vector<vector<bool> > > &discoverMa
         search_container.pop_front();
         if (place.row > 0)
             if (discover({place.color, place.row - 1, place.col}, mommy, discoverMap, y)) find = true; //north
-        if (place.col < y.width)
+        if (place.col < y.width - 1)
             if (discover({place.color, place.row, place.col + 1}, mommy, discoverMap, y)) find = true; //east
-        if (place.row < y.height)
+        if (place.row < y.height - 1)
             if (discover({place.color, place.row + 1, place.col}, mommy, discoverMap, y)) find = true; //south
         if (place.col > 0)
             if (discover({place.color, place.row, place.col - 1}, mommy, discoverMap, y)) find = true; //west

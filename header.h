@@ -22,12 +22,14 @@ public:
 
     node* solve(state start);
     void listOut(node begin);
-    void mapOut();
+    void mapOut(node begin);
 
     bool checkDiscover(state x);
     vector<vector<vector<bool> > > discoverMap;
 
     void mazeOut();
+    void mapPrint(const vector<vector<char> > &map);
+    void mapReplace(vector<vector<char> > &map, char x, char y);
 
 private:
     friend class player;

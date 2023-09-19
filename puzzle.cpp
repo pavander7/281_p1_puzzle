@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
         if (outputType == 1) {
             map.listOut(*q);
         } else {
-            cout << "not yet implemented";
+            map.mapOut(*q);
         }
     } return 0;
 }

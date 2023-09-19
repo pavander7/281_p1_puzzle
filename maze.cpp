@@ -5,10 +5,24 @@
 using namespace std;
 
 Maze::Maze(bool styleIn, bool &error){
-    style = styleIn;
     cin >> num_colors >> height >> width;
+    if (num_colors > 26) {
+        cerr << "Error: Invalid numColor";
+        exit(1);
+        return;
+    } 
+    if (width < 1) {
+        cerr << "Error: Invalid width";
+        exit(1);
+        return;
+    } if (height < 1) {
+        cerr << "Error: Invalid height";
+        exit(1);
+        return;
+    }
     mazeMap = vector<vector<char> >(height, vector<char>(width, '.'));
     discoverMap = vector<vector<vector<bool> > >(height, vector<vector<bool>>(width, vector<bool>(num_colors + 1, false)));
+    style = styleIn;
     /*for (size_t q = 0; q < num_colors; q++) {
         cout << "color " << q << ":" << endl;
         for (size_t r = 0; r < height; r++) {
@@ -23,30 +37,16 @@ Maze::Maze(bool styleIn, bool &error){
             cout << discoverMap[r][c][num_colors];
         } cout << endl;
     } */
-    if (num_colors > 26) {
-        cerr << "Error: Invalid numColor";
-        error = true;
-        return;
-    } 
-    if (width < 1) {
-        cerr << "Error: Invalid width";
-        error = true;
-        return;
-    } if (height < 1) {
-        cerr << "Error: Invalid height";
-        error = true;
-        return;
-    }
     bool startInit = false;
     bool targetInit = false;
     int maxDoor = 64 + int(num_colors);
     int maxButton = 96 + int(num_colors);
-    string junk;
-    getline(cin, junk);
+    string line;
+    getline(cin, line);
     size_t r = 0;
     while (r < height) {
-        //cout << endl;
-        string line;
+        line = "";
+        //cout << endl << r << endl;
         if (r == height - 1) {
             char temp;
             //cout << "begin final line: " << endl;
@@ -133,7 +133,14 @@ size_t Maze::startCol() {return start_c;}
 void Maze::mazeOut() {
     for (size_t r = 0; r < height; r++) {
         for (size_t c = 0; c < width; c++) {
-            cout << mazeMap[r][c];
+            bool discovered = false;
+            for (size_t q = 0; q < num_colors; q++) {
+                if (discoverMap[r][c][q]) {
+                    discovered = true;
+                }
+            }
+            if (discovered) cout << mazeMap[r][c];
+            else cout << '#';
         } cout << endl;
     }
 }
@@ -180,8 +187,57 @@ void Maze::listOut(node begin) {
     }
 }
 
-void Maze::mapOut() {
-    //tbi
+void Maze::mapOut(node begin) {
+    deque<state> path;
+    node* current = new node{begin};
+    while (current != nullptr) {
+        //cout << "proccessing " << "(" << (*current).datum.color << ", ("
+        //            << (*current).datum.row << ", " << (*current).datum.col << "))" << endl;
+        path.push_front((*current).datum);
+        current->evacuate();
+        node* temp = current->prev;
+        delete current;
+        current = temp;
+    } vector<vector<char> > outMap = mazeMap;
+    mapReplace(outMap, '^', '.');
+    char currentColor = '^';
+    for (size_t u = 1; u < path.size() - 1; u++) {
+        if(path[u].color != path[u+1].color) {
+            outMap[path[u].row][path[u].col] = '%';
+            cout << "// color " << path[u].color << endl;
+            mapPrint(outMap);
+            outMap = mazeMap;
+            outMap[start_r][start_c] = '.';
+            currentColor = path[u+1].color;
+            mapReplace(outMap, path[u+1].color, '.');
+            mapReplace(outMap, char(path[u+1].color - 32), '.');
+            outMap[path[u].row][path[u].col] = '@';
+            u++;
+        } else {
+            outMap[path[u].row][path[u].col] = '+';
+        }
+    } 
+    cout << "// color " << currentColor << endl;
+    mapPrint(outMap);
+}
+
+//Prints map to cout
+void Maze::mapPrint(const vector<vector<char> > &map) {
+    for (size_t r = 0; r < height; r++) {
+        for (size_t c = 0; c < width; c++) {
+            cout << map[r][c];
+        }
+        cout << endl;
+    }
+}
+
+//Replaces all instances in Maze map of char x with char y
+void Maze::mapReplace(vector<vector<char> > &map, char x, char y) {
+    for (size_t r = 0; r < height; r++) {
+        for (size_t c = 0; c < width; c++) {
+            if (map[r][c] == x) map[r][c] = y;
+        }
+    }
 }
 
 bool Maze::checkDiscover(state x){
