@@ -69,5 +69,4 @@ int main(int argc, char* argv[]) {
             cout << "not yet implemented";
         }
     }
-    
 }
