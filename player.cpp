@@ -6,13 +6,12 @@ using namespace std;
 
 player::player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
     style = y.style;
-    begin = {startIn, nullptr};
     //cout << "discovering start position" << endl;
     discover(startIn, nullptr, discoverMap, y);
     //cout << endl;
 }
 
-bool player::discover(state x, node* origin, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
+bool player::discover(state x, node* origin, vector<vector<vector<bool> > > &discoverMap, const Maze &y) {
     //cout << "starting discover instance on " << "(" << x.color << ", ("
     //                << x.row << ", " << x.col << "))" << endl;
     if (x.row >= y.height || x.col >= y.width || x.color - 0 >= int(y.num_colors + 97)) {
@@ -69,14 +68,10 @@ bool player::investigate(bool button, vector<vector<vector<bool> > > &discoverMa
     return find;
 }
 
-bool player::empty() {
+bool player::empty() const {
     return search_container.empty();
 }
 
-node* player::frontPoint() {
-    return &(search_container.front());
-}
-
-node player::front() {
+node player::front() const {
     return search_container.front();
 }

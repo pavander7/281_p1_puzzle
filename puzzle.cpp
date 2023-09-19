@@ -28,7 +28,11 @@ int main(int argc, char* argv[]) {
     int c = getopt_long(argc, argv, "hqso:", long_options, &option_index);
     while (c != -1) {
         if (c == 'h') {
-            cout << "help menu" << endl; //UPDATE
+            cout    << "help menu: \n select search type: \n + -q/--queue : breadth-first search \n"
+                    << "+ -s/--stack : depth-first search \n\n select output type with -o/--output"
+                    << "and one fo the following arguments: \n + map (default)\n + list \n" 
+                    << "type \" < \" followed by input filename (.txt) \n"
+                    << "type \" > \" followed by output filename (.txt) \n";
         } else if (c == 'q') {
             if (dataType == 2) dataType = 0;
             else {
@@ -66,7 +70,7 @@ int main(int argc, char* argv[]) {
     }
     bool q = map.solve({'^', map.startRow(),map.startCol()});
     if (q == false) {
-        cout << "No solution." << endl << "Discovered:" << endl;
+        cout << "No solution.\nDiscovered:\n";
         map.mazeOut();
     } else {
         //cout << "solve successful, output:" << endl;

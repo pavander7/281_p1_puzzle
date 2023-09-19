@@ -141,7 +141,7 @@ void Maze::mazeOut() {
             }
             if (discovered) cout << mazeMap[r][c];
             else cout << '#';
-        } cout << endl;
+        } cout << "\n";
     }
 }
 
@@ -184,7 +184,7 @@ void Maze::listOut() {
         current = temp;
     } for (size_t u = 0; u < path.size(); u++) {
         cout << "(" << path[u].color << ", (" << 
-            path[u].row << ", " << path[u].col << "))" << endl;
+            path[u].row << ", " << path[u].col << "))\n";
     }
 }
 
@@ -205,7 +205,7 @@ void Maze::mapOut() {
     for (size_t u = 1; u < path.size() - 1; u++) {
         if(path[u].color != path[u+1].color) {
             outMap[path[u].row][path[u].col] = '%';
-            cout << "// color " << path[u].color << endl;
+            cout << "// color " << path[u].color << "\n";
             mapPrint(outMap);
             outMap = mazeMap;
             outMap[start_r][start_c] = '.';
@@ -218,7 +218,7 @@ void Maze::mapOut() {
             outMap[path[u].row][path[u].col] = '+';
         }
     } 
-    cout << "// color " << currentColor << endl;
+    cout << "// color " << currentColor << "\n";
     mapPrint(outMap);
 }
 
@@ -228,7 +228,7 @@ void Maze::mapPrint(const vector<vector<char> > &map) {
         for (size_t c = 0; c < width; c++) {
             cout << map[r][c];
         }
-        cout << endl;
+        cout << "\n";
     }
 }
 
@@ -241,7 +241,7 @@ void Maze::mapReplace(vector<vector<char> > &map, char x, char y) {
     }
 }
 
-bool Maze::checkDiscover(state x){
+bool Maze::checkDiscover(state x) const{
     if (x.row > height || x.col > width || x.color - 0 >= int(num_colors + 97)) {
         //cout << "check out of bounds" << endl;
         return true;
