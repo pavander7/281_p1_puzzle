@@ -139,14 +139,15 @@ node* Maze::solve(state start, bool root) {
 void Maze::listOut(node begin) {
     deque<state> path;
     node* current = new node{begin};
-    while ((*current).prev != nullptr) {
+    while (current != nullptr) {
         path.push_front((*current).datum);
         current->evacuate();
+        node* temp = current->prev;
         delete current;
-    } while (!(path.empty())) {
-        cout << endl << "(" << path.front().color << ", (" << 
-            path.front().row << ", " << path.front().col << "))";
-        path.pop_front();
+        current = temp;
+    } for (size_t u = 0; u < path.size(); u++) {
+        cout << endl << "(" << path[u].color << ", (" << 
+            path[u].row << ", " << path[u].col << "))";
     }
 }
 
