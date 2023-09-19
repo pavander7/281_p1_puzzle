@@ -11,7 +11,7 @@ using namespace std;
 
 class Maze {
 public:
-    Maze(bool styleIn); //default constructor
+    Maze(bool styleIn, bool &error); //default constructor
 
     size_t startRow();
     size_t startCol();
@@ -20,12 +20,14 @@ public:
     bool button(state x) const;
     bool door(state x) const;
 
-    node* solve(state start, bool root);
+    node* solve(state start);
     void listOut(node begin);
     void mapOut();
 
     bool checkDiscover(state x);
     vector<vector<vector<bool> > > discoverMap;
+
+    void mazeOut();
 
 private:
     friend class player;
@@ -39,14 +41,12 @@ private:
 
 class player {
     public:
-        player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y, bool root);
+        player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y);
         bool discover(state x, node* origin, vector<vector<vector<bool> > > &discoverMap, Maze &y);
         node* frontPoint();
         node front();
-        bool checkButton(state x, Maze &y);
         bool investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y);
         bool empty();
-        state current_state;
     private:
         deque<node*> search_container;
         node begin;

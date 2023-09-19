@@ -9,6 +9,8 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
     //used for getOptLong()
+    ios_base::sync_with_stdio(false);
+
     static struct option long_options[] = {
     {"help",    no_argument,        NULL,  'h'},
     {"queue",   no_argument,        NULL,  'q'},
@@ -20,7 +22,7 @@ int main(int argc, char* argv[]) {
 
     //used to track data type, 2 signifies unknown
     size_t dataType = 2;
-    size_t outputType;
+    size_t outputType = 0;
 
     //input parsing
     int c = getopt_long(argc, argv, "hqso:", long_options, &option_index);
@@ -57,16 +59,21 @@ int main(int argc, char* argv[]) {
     }
 
     //create map and player
-    Maze map = Maze(dataType == 1);
-    node* q = map.solve({'^', map.startRow(),map.startCol()}, true);
+    bool error = false;
+    Maze map = Maze(dataType == 1, error);
+    if (error) {
+        return 1;
+    }
+    node* q = map.solve({'^', map.startRow(),map.startCol()});
     if (q == nullptr) {
-        cout << "no solution found" << endl;
+        cout << "No solution." << endl << "Discovered:" << endl;
+        map.mazeOut();
     } else {
-        cout << "solve successful, output:" << endl;
+        //cout << "solve successful, output:" << endl;
         if (outputType == 1) {
             map.listOut(*q);
         } else {
             cout << "not yet implemented";
         }
-    }
+    } return 0;
 }

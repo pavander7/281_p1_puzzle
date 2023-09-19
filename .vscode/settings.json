@@ -9,6 +9,7 @@
         "__split_buffer": "cpp",
         "array": "cpp",
         "string_view": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "iosfwd": "cpp"
     }
 }
