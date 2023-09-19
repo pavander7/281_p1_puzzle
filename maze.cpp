@@ -1,6 +1,6 @@
 //IDENTIFIER  = A8A3A33EF075ACEF9B08F5B9845569ECCB423725
 
-#include "maze.h"
+#include "header.h"
 
 using namespace std;
 

@@ -6,7 +6,6 @@
 #include <cassert>
 #include <iostream>
 #include "state.h"
-#include "player.h"
 
 using namespace std;
 
@@ -36,4 +35,20 @@ private:
     size_t target_r, target_c;
     vector<vector<char> > mazeMap;
     bool style;
+};
+
+class player {
+    public:
+        player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y, bool root);
+        bool discover(state x, node* origin, vector<vector<vector<bool> > > &discoverMap, Maze &y);
+        node* frontPoint();
+        node front();
+        bool checkButton(state x, Maze &y);
+        bool investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y);
+        bool empty();
+        state current_state;
+    private:
+        deque<node*> search_container;
+        node begin;
+        bool style;
 };
