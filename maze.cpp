@@ -199,44 +199,63 @@ void Maze::mapOut() {
         node* temp = current->prev;
         //delete current;
         current = temp;
-    } vector<vector<char> > outMap = mazeMap;
-    mapReplace(outMap, '^', '.');
+    } vector<vector<vector<char> > >outMap(num_colors+1, vector<vector<char>>(height, vector<char>(width, '.')));
+    for (size_t w = 0; w < num_colors; w++) {
+        for (size_t r = 0; r < height; r++) {
+            for (size_t c = 0; c < width; c++) {
+                outMap[w][r][c] = mazeMap[r][c];
+            }
+        }
+        mapReplace(outMap, w, char(w + 97), '.');
+        mapReplace(outMap, w, char(w + 65), '.');
+        mapReplace(outMap, w, '?', '.');
+    }
+    for (size_t r = 0; r < height; r++) {
+        for (size_t c = 0; c < width; c++) {
+            outMap[num_colors][r][c] = mazeMap[r][c];
+        }
+    }
+    mapReplace(outMap, num_colors, '^', '.');
     char currentColor = '^';
     for (size_t u = 1; u < path.size() - 1; u++) {
         if(path[u].color != path[u+1].color) {
-            outMap[path[u].row][path[u].col] = '%';
-            cout << "// color " << path[u].color << "\n";
-            mapPrint(outMap);
-            outMap = mazeMap;
-            outMap[start_r][start_c] = '.';
+            if (currentColor != '^') outMap[size_t(currentColor) - 97][path[u].row][path[u].col] = '%';
+            else outMap[num_colors][path[u].row][path[u].col] = '%';
             currentColor = path[u+1].color;
-            mapReplace(outMap, path[u+1].color, '.');
-            mapReplace(outMap, char(path[u+1].color - 32), '.');
-            outMap[path[u].row][path[u].col] = '@';
+            outMap[size_t(path[u+1].color)][path[u].row][path[u].col] = '@';
             u++;
         } else {
-            outMap[path[u].row][path[u].col] = '+';
+            outMap[size_t(currentColor) - 97][path[u].row][path[u].col] = '+';
         }
     } 
-    cout << "// color " << currentColor << "\n";
     mapPrint(outMap);
 }
 
 //Prints map to cout
-void Maze::mapPrint(const vector<vector<char> > &map) {
+void Maze::mapPrint(const vector<vector<vector<char> > > &map) {
+    cout << "// color ^\n";
     for (size_t r = 0; r < height; r++) {
         for (size_t c = 0; c < width; c++) {
-            cout << map[r][c];
+            cout << map[num_colors][r][c];
         }
         cout << "\n";
+    }
+    for (size_t w = 0; w < num_colors; w++) {
+        cout << "// color " << char(w + 97) << "\n";
+        for (size_t r = 0; r < height; r++) {
+            for (size_t c = 0; c < width; c++) {
+                cout << map[w][r][c];
+            }
+            cout << "\n";
+        }
     }
 }
 
 //Replaces all instances in Maze map of char x with char y
-void Maze::mapReplace(vector<vector<char> > &map, char x, char y) {
+void Maze::mapReplace(vector<vector<vector<char> > > &map, size_t level, char x, char y) {
     for (size_t r = 0; r < height; r++) {
         for (size_t c = 0; c < width; c++) {
-            if (map[r][c] == x) map[r][c] = y;
+            if (map[level][r][c] == x) map[level][r][c] = y;
         }
     }
 }

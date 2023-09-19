@@ -29,8 +29,8 @@ public:
     vector<vector<vector<bool> > > discoverMap;
 
     void mazeOut();
-    void mapPrint(const vector<vector<char> > &map);
-    void mapReplace(vector<vector<char> > &map, char x, char y);
+    void mapPrint(const vector<vector<vector<char> > > &map);
+    void mapReplace(vector<vector<vector<char> > > &map, size_t level, char x, char y);
 
 private:
     friend class player;
