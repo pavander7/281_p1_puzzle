@@ -3,7 +3,7 @@
 #include <getopt.h>
 #include <iostream>
 #include <string>
-#include "maze.h"
+#include "header.h"
 
 using namespace std;
 

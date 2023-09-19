@@ -142,7 +142,7 @@ void Maze::listOut(node begin) {
     while ((*current).prev != nullptr) {
         path.push_front((*current).datum);
         current->evacuate();
-        delete &current;
+        delete current;
     } while (!(path.empty())) {
         cout << endl << "(" << path.front().color << ", (" << 
             path.front().row << ", " << path.front().col << "))";
