@@ -64,7 +64,7 @@ bool player::investigate(bool button, vector<vector<vector<bool> > > &discoverMa
             if (discover({place.color, place.row + 1, place.col}, mommy, discoverMap, y)) find = true; //south
         if (place.col > 0)
             if (discover({place.color, place.row, place.col - 1}, mommy, discoverMap, y)) find = true; //west
-    } //cout << endl;
+    } if (!find) y.backtrace.pop_back(); //cout << endl;
     return find;
 }
 
