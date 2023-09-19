@@ -208,7 +208,7 @@ void Maze::mapOut() {
         }
         mapReplace(outMap, w, char(w + 97), '.');
         mapReplace(outMap, w, char(w + 65), '.');
-        mapReplace(outMap, w, '?', '.');
+        mapReplace(outMap, w, '@', '.');
     }
     for (size_t r = 0; r < height; r++) {
         for (size_t c = 0; c < width; c++) {
@@ -222,7 +222,7 @@ void Maze::mapOut() {
             if (currentColor != '^') outMap[size_t(currentColor - 97)][path[u].row][path[u].col] = '%';
             else outMap[num_colors][path[u].row][path[u].col] = '%';
             currentColor = path[u+1].color;
-            if (currentColor != '^') outMap[size_t(path[u+1].color)][path[u].row][path[u].col] = '@';
+            if (currentColor != '^') outMap[size_t(path[u+1].color - 97)][path[u].row][path[u].col] = '@';
             else outMap[num_colors][path[u].row][path[u].col] = '@';
             u++;
         } else {
