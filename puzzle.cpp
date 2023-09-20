@@ -63,6 +63,7 @@ int main(int argc, char* argv[]) {
     } 
     if (dataType == 2) {
         cerr << "Error: Must have at least one of stack or queue";
+        return 1;
     }
 
     //create map and player
