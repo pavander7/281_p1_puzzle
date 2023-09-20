@@ -26,7 +26,7 @@ public:
     void mapOut();
 
     bool checkDiscover(state x) const;
-    vector<vector<vector<bool> > > discoverMap;
+    vector<vector<vector<char> > > discoverMap;
 
     void mazeOut();
     void mapPrint(const vector<vector<vector<char> > > &map);
@@ -45,10 +45,10 @@ private:
 
 class player {
     public:
-        player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y);
-        bool discover(state x, node* origin, vector<vector<vector<bool> > > &discoverMap, const Maze &y);
+        player(state startIn, vector<vector<vector<char> > > &discoverMap, Maze &y);
+        bool discover(state x, node* origin, vector<vector<vector<char> > > &discoverMap, const Maze &y);
         node front() const;
-        void investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y);
+        void investigate(bool button, vector<vector<vector<char> > > &discoverMap, Maze &y);
         bool empty() const;
     private:
         deque<node> search_container;

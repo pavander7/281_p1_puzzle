@@ -60,6 +60,9 @@ int main(int argc, char* argv[]) {
             return 1;
         }
         c = getopt_long(argc, argv, "hqso:", long_options, &option_index);
+    } 
+    if (dataType == 2) {
+        cerr << "Error: Must have at least one of stack or queue";
     }
 
     //create map and player

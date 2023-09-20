@@ -4,14 +4,14 @@
 
 using namespace std;
 
-player::player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
+player::player(state startIn, vector<vector<vector<char> > > &discoverMap, Maze &y) {
     style = y.style;
     //cout << "discovering start position" << endl;
     discover(startIn, nullptr, discoverMap, y);
     //cout << endl;
 }
 
-bool player::discover(state x, node* origin, vector<vector<vector<bool> > > &discoverMap, const Maze &y) {
+bool player::discover(state x, node* origin, vector<vector<vector<char> > > &discoverMap, const Maze &y) {
     //cout << "starting discover instance on " << "(" << x.color << ", ("
     //                << x.row << ", " << x.col << "))" << endl;
     if (x.row >= y.height || x.col >= y.width || x.color - 0 >= int(y.num_colors + 97)) {
@@ -28,11 +28,7 @@ bool player::discover(state x, node* origin, vector<vector<vector<bool> > > &dis
             search_container.push_front(temp);
             /* cout << "discovered (front) " << "(" << (*search_container.front()).datum.color << ", (" << 
                     (*search_container.front()).datum.row << ", " << (*search_container.front()).datum.col << "))" << endl; */
-        } if (x.color == '^') {
-            discoverMap[x.row][x.col][y.num_colors] = true;
-        } else { 
-            discoverMap[x.row][x.col][size_t(x.color - 97)] = true; 
-        }
+        } discoverMap[x.row][x.col].push_back(x.color);
         return true;
     } else if (y.checkDiscover(x)) {
         //cout << "discarding: already discovered" << endl;
@@ -43,7 +39,7 @@ bool player::discover(state x, node* origin, vector<vector<vector<bool> > > &dis
     }
 }
 
-void player::investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
+void player::investigate(bool button, vector<vector<vector<char> > > &discoverMap, Maze &y) {
     //cout << "starting investigate instance" << endl;
     bool find = false;
     state place = front().datum;

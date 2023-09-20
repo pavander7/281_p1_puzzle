@@ -21,7 +21,7 @@ Maze::Maze(bool styleIn, bool &error){
         return;
     }
     mazeMap = vector<vector<char> >(height, vector<char>(width, '.'));
-    discoverMap = vector<vector<vector<bool> > >(height, vector<vector<bool>>(width, vector<bool>(num_colors + 1, false)));
+    discoverMap = vector<vector<vector<char> > >(height, vector<vector<char>>(width));
     style = styleIn;
     /*for (size_t q = 0; q < num_colors; q++) {
         cout << "color " << q << ":" << endl;
@@ -133,13 +133,7 @@ size_t Maze::startCol() {return start_c;}
 void Maze::mazeOut() {
     for (size_t r = 0; r < height; r++) {
         for (size_t c = 0; c < width; c++) {
-            bool discovered = false;
-            for (size_t q = 0; q <= num_colors; q++) {
-                if (discoverMap[r][c][q]) {
-                    discovered = true;
-                }
-            }
-            if (discovered) cout << mazeMap[r][c];
+            if (discoverMap[r][c].size() > 0) cout << mazeMap[r][c];
             else cout << '#';
         } cout << "\n";
     }
@@ -179,7 +173,10 @@ void Maze::listOut() {
         node* temp = current->prev;
         //delete current;
         current = temp;
-    } for (size_t u = 0; u < path.size(); u++) {
+    } backtrace.clear();
+    discoverMap.clear();
+    mazeMap.clear();
+    for (size_t u = 0; u < path.size(); u++) {
         cout << "(" << path[u].color << ", (" << 
             path[u].row << ", " << path[u].col << "))\n";
     }
@@ -196,20 +193,22 @@ void Maze::mapOut() {
         node* temp = current->prev;
         //delete current;
         current = temp;
-    } vector<vector<vector<char> > >outMap(num_colors+1, vector<vector<char>>(height, vector<char>(width, '.')));
+    } backtrace.clear();
+    discoverMap.clear();
+    vector<vector<vector<char> > >outMap(num_colors+1, vector<vector<char>>(height, vector<char>(width, '.')));
     for (size_t w = 0; w < num_colors; w++) {
         for (size_t r = 0; r < height; r++) {
             for (size_t c = 0; c < width; c++) {
-                outMap[w][r][c] = mazeMap[r][c];
+                if (size_t(mazeMap[r][c]) == w + 97 || size_t(mazeMap[r][c]) == w + 65 || mazeMap[r][c] == '@') {
+                    outMap[w][r][c] = '.';
+                } else outMap[w][r][c] = mazeMap[r][c];
             }
         }
-        mapReplace(outMap, w, char(w + 97), '.');
-        mapReplace(outMap, w, char(w + 65), '.');
-        mapReplace(outMap, w, '@', '.');
     }
     for (size_t r = 0; r < height; r++) {
         for (size_t c = 0; c < width; c++) {
-            outMap[num_colors][r][c] = mazeMap[r][c];
+            if (mazeMap[r][c] == '^') outMap[num_colors][r][c] = '.';
+            else outMap[num_colors][r][c] = mazeMap[r][c];
         }
     }
     mapReplace(outMap, num_colors, '^', '.');
@@ -264,13 +263,13 @@ bool Maze::checkDiscover(state x) const{
         //cout << "check out of bounds" << endl;
         return true;
     } else {
-        if (x.color == '^') {
-            //cout << "checking value at ^ " << x.row << " " << x.col << endl;
-            return discoverMap[x.row][x.col][num_colors];
-        } else {
-            //cout << "checking value at " << x.color << " " << x.row << " " << x.col << endl;
-            return discoverMap[x.row][x.col][size_t(x.color - 97)];
+        bool check = false;
+        for (size_t w = 0; w < discoverMap[x.row][x.col].size(); w++) {
+            if (discoverMap[x.row][x.col][w] == x.color) {
+                check = true;
+            }
         }
+        return check;
     }
 }
 
