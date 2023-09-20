@@ -133,7 +133,7 @@ size_t Maze::startCol() {return start_c;}
 void Maze::mazeOut() {
     for (size_t r = 0; r < height; r++) {
         for (size_t c = 0; c < width; c++) {
-            if (discoverMap[r][c].size() > 0) cout << mazeMap[r][c];
+            if (!discoverMap[r][c].empty()) cout << mazeMap[r][c];
             else cout << '#';
         } cout << "\n";
     }
@@ -143,7 +143,7 @@ bool Maze::solve(state start) {
     /* cout << "solve on " << "(" << start.color << ", ("
                     << start.row << ", " << start.col << "))" 
                     << endl; */
-    player observer = player(start, discoverMap, *this);
+    player observer = player(start, *this);
     while(!observer.empty()) {
         state spyglass = observer.front().datum;
         /* cout << "solve on " << "(" << spyglass.color << ", ("
@@ -154,7 +154,7 @@ bool Maze::solve(state start) {
             backtrace.push_back(observer.front());
             return true;
         } 
-        observer.investigate(button(spyglass), discoverMap, *this);
+        observer.investigate(button(spyglass), *this);
         //cout << "investigate finished on " << "(" << spyglass.color << ", ("
         //            << spyglass.row << ", " << spyglass.col << "))" << endl;
     } return false;
@@ -211,7 +211,6 @@ void Maze::mapOut() {
             else outMap[num_colors][r][c] = mazeMap[r][c];
         }
     }
-    mapReplace(outMap, num_colors, '^', '.');
     char currentColor = '^';
     for (size_t u = 1; u < path.size() - 1; u++) {
         if(path[u].color != path[u+1].color) {
@@ -249,27 +248,17 @@ void Maze::mapPrint(const vector<vector<vector<char> > > &map) {
     }
 }
 
-//Replaces all instances in Maze map of char x with char y
-void Maze::mapReplace(vector<vector<vector<char> > > &map, size_t level, char x, char y) {
-    for (size_t r = 0; r < height; r++) {
-        for (size_t c = 0; c < width; c++) {
-            if (map[level][r][c] == x) map[level][r][c] = y;
-        }
-    }
-}
-
 bool Maze::checkDiscover(state x) const{
-    if (x.row > height || x.col > width || x.color - 0 >= int(num_colors + 97)) {
-        //cout << "check out of bounds" << endl;
-        return true;
-    } else {
-        bool check = false;
+    bool check = false;
+    if (!discoverMap[x.row][x.col].empty()) {
         for (size_t w = 0; w < discoverMap[x.row][x.col].size(); w++) {
             if (discoverMap[x.row][x.col][w] == x.color) {
                 check = true;
             }
         }
         return check;
+    } else {
+        return false;
     }
 }
 
