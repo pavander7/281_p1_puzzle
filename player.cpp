@@ -43,7 +43,7 @@ bool player::discover(state x, node* origin, vector<vector<vector<bool> > > &dis
     }
 }
 
-bool player::investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
+void player::investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y) {
     //cout << "starting investigate instance" << endl;
     bool find = false;
     state place = front().datum;
@@ -65,7 +65,6 @@ bool player::investigate(bool button, vector<vector<vector<bool> > > &discoverMa
         if (place.col > 0)
             if (discover({place.color, place.row, place.col - 1}, mommy, discoverMap, y)) find = true; //west
     } if (!find) y.backtrace.pop_back(); //cout << endl;
-    return find;
 }
 
 bool player::empty() const {

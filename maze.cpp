@@ -160,10 +160,7 @@ bool Maze::solve(state start) {
             backtrace.push_back(observer.front());
             return true;
         } 
-        if (!observer.investigate(button(spyglass), discoverMap, *this)) {
-            /* cout << "branch failed from " << "(" << spyglass.color << ", ("
-                    << spyglass.row << ", " << spyglass.col << "))" << endl << endl; */
-        }
+        observer.investigate(button(spyglass), discoverMap, *this);
         //cout << "investigate finished on " << "(" << spyglass.color << ", ("
         //            << spyglass.row << ", " << spyglass.col << "))" << endl;
     } return false;

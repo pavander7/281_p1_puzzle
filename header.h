@@ -48,7 +48,7 @@ class player {
         player(state startIn, vector<vector<vector<bool> > > &discoverMap, Maze &y);
         bool discover(state x, node* origin, vector<vector<vector<bool> > > &discoverMap, const Maze &y);
         node front() const;
-        bool investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y);
+        void investigate(bool button, vector<vector<vector<bool> > > &discoverMap, Maze &y);
         bool empty() const;
     private:
         deque<node> search_container;
